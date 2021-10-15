@@ -1,0 +1,18 @@
+.roadmap-grid {
+
+
+  @include breakpoint(sm) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+ul.roadmap-list {
+  list-style: square;
+  padding: 0 0 0 1rem;
+
+  & > li {
+    margin-bottom: .5rem;
+    padding-right: 1rem;
+  }
+}

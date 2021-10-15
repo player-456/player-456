@@ -1,0 +1,44 @@
+.characters-grid {
+  display: flex;
+  flex-direction: column;
+
+  @include breakpoint(sm) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.character {
+  display: flex;
+  margin-bottom: 2rem;
+  flex-direction: column;
+
+  @include breakpoint(sm) {
+    flex-direction: row;
+  }
+}
+
+.character--image {
+  width: 167px;
+  flex-basis: 167px;
+
+  @include breakpoint(sm) {
+    min-width: 167px;
+  }
+
+  & img {
+    max-width: 100%;
+  }
+}
+
+.character--info {
+  padding: 0 1rem;
+
+  @include breakpoint(sm) {
+    padding: 0 2rem;
+  }
+
+  & p {
+    line-height: 2;
+  }
+}

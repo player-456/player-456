@@ -1,0 +1,67 @@
+@font-face {
+  font-family: 'Azonix';
+  src: url('../../fonts/Azonix.otf');
+}
+
+@font-face {
+  font-family: 'PoeRedcoatNew';
+  src: url('../../fonts/PoeRedcoatNew.ttf');
+}
+
+* {
+  color: $gray-light;
+  font-family: 'Comfortaa', Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+h2,
+.h2 {
+  font-size: 2.5rem; // 40px;
+  font-family: Azonix, Helvetica, Arial, sans-serif;
+  text-align: center;
+  margin: 24px 0;
+  line-height: 1.7;
+
+  @include breakpoint(sm) {
+    font-size: 3rem; // 48px;
+  }
+}
+
+h3,
+.h3 {
+  font-size: 26px;
+  font-family: Azonix, Helvetica, Arial, sans-serif;
+}
+
+h4,
+.h4 {
+  font-size: 21px;
+  font-family: Azonix, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  margin: 1rem 0;
+}
+
+.faq h4,
+.faq .h4 {
+  color: $pink;
+  margin-top: 3rem;
+}
+
+.start-date {
+  margin: 24px 0;
+}
+
+a {
+  color: $pink;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+em {
+  color: $pink;
+  font-style: normal;
+}

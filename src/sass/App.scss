@@ -1,0 +1,115 @@
+@import-normalize;
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap');
+@import "utils/vars";
+@import "utils/mixins";
+
+// Globals
+@import "globals/typography";
+@import "globals/layout";
+
+// Elements
+@import "elements/button";
+@import "elements/list";
+@import "elements/team-member";
+
+// Blocks
+@import "blocks/characters";
+@import "blocks/roadmap";
+
+// Global styles
+html {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: $black;
+}
+
+
+// Header
+header {
+  padding: 24px auto;
+  text-align: center;
+
+  & .logo {
+    max-width: 100%;
+
+    @include breakpoint(sm) {
+      max-width: 562px;
+    }
+  }
+}
+
+// Intro
+.intro {
+  height: 380px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex-direction: column;
+}
+
+// Button
+.button {
+  border: 1px solid $white;
+  border-radius: 4px;
+  background: transparent;
+  color: $white;
+  display: inline-block;
+  padding: 8px 92px;
+  font-family: 'PoeRedcoatNew', Helvetica, Arial, sans-serif;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.main-cta-container {
+  text-align: center;
+  padding: 24px 0;
+}
+
+.site-teaser {
+  text-align: center;
+
+  & img {
+    width: 365px;
+  }
+}
+
+.team-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding-bottom: 3rem;
+}
+
+.team-content {
+  text-align: center;
+}
+
+.social-links {
+  display: flex;
+  justify-content: center;
+  margin-top: 3rem;
+
+  a {
+    margin: 0 1rem;
+
+    & > img {
+      width: 69px;
+      display: block;
+    }
+  }
+}
+
+// Footer
+footer {
+  text-align: center;
+  padding-bottom: 2rem;
+
+  & .disclaimer {
+    font-size: 10px;
+    color: $gray-medium;
+  }
+}

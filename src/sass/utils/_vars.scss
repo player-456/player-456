@@ -1,0 +1,16 @@
+$content-width: 500px;
+
+$breakpoints: (
+	'xs': 480px,
+	'sm': 768px,
+  'md': 1280px,
+	'lg': 1440px,
+	'xl': 1600px
+);
+
+// Colors
+$black: #000000;
+$white: #ffffff;
+$pink: #ed1b76;
+$gray-light: #cccccc;
+$gray-medium: #999999;

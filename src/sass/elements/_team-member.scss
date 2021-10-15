@@ -1,0 +1,14 @@
+.team-member {
+  margin: 0 1rem;
+  text-align: center;
+
+  & img {
+    width: 167px;
+    display: block;
+  }
+
+  & a {
+    color: $white;
+    font-size: .875rem; // 14px;
+  }
+}
