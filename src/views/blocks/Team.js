@@ -50,11 +50,11 @@ return (
         </div>
 
         <div className="social-links">
-          <a href="https://twitter.com/beplayer456" target="_blank">
+          <a href="https://twitter.com/beplayer456" target="_blank" rel="noreferrer">
             <img src={TwitterIcon} alt="twitter.com/beplayer456" />
           </a>
 
-          <a href="https://discord.com/invite/aT9eUcuX53" target="_blank">
+          <a href="https://discord.com/invite/aT9eUcuX53" target="_blank" rel="noreferrer">
             <img src={DiscordIcon} alt="discord.com/invite/aT9eUcuX53" />
           </a>
         </div>

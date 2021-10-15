@@ -1,0 +1,29 @@
+{
+  "files": {
+    "main.css": "/static/css/main.1013c755.chunk.css",
+    "main.js": "/static/js/main.e5af03e6.chunk.js",
+    "main.js.map": "/static/js/main.e5af03e6.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.4630e1c0.js",
+    "runtime-main.js.map": "/static/js/runtime-main.4630e1c0.js.map",
+    "static/js/2.3ff4f508.chunk.js": "/static/js/2.3ff4f508.chunk.js",
+    "static/js/2.3ff4f508.chunk.js.map": "/static/js/2.3ff4f508.chunk.js.map",
+    "index.html": "/index.html",
+    "static/css/main.1013c755.chunk.css.map": "/static/css/main.1013c755.chunk.css.map",
+    "static/js/2.3ff4f508.chunk.js.LICENSE.txt": "/static/js/2.3ff4f508.chunk.js.LICENSE.txt",
+    "static/media/456-logo.8197ae0e.gif": "/static/media/456-logo.8197ae0e.gif",
+    "static/media/App.scss": "/static/media/PoeRedcoatNew.820a0ebc.ttf",
+    "static/media/Detective.519e6a6a.gif": "/static/media/Detective.519e6a6a.gif",
+    "static/media/Frontman.39ebc0d4.gif": "/static/media/Frontman.39ebc0d4.gif",
+    "static/media/Guards.cd6a6e10.gif": "/static/media/Guards.cd6a6e10.gif",
+    "static/media/Placeholder.069411b9.png": "/static/media/Placeholder.069411b9.png",
+    "static/media/Players.395e3186.gif": "/static/media/Players.395e3186.gif",
+    "static/media/Salesman.216a8f0a.png": "/static/media/Salesman.216a8f0a.png",
+    "static/media/site-teaser.0ba17fb8.gif": "/static/media/site-teaser.0ba17fb8.gif"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.4630e1c0.js",
+    "static/js/2.3ff4f508.chunk.js",
+    "static/css/main.1013c755.chunk.css",
+    "static/js/main.e5af03e6.chunk.js"
+  ]
+}
