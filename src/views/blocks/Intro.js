@@ -1,5 +1,5 @@
 import React from "react";
-import Button from "../elements/Button";
+import ConnectWallet from "./ConnectWallet";
 import SiteTeaser from "../../img/site-teaser.gif";
 
 const Intro = () => {
@@ -10,9 +10,7 @@ return (
         Games starting October 24
       </h2>
 
-      <div className="main-cta-container">
-        <Button classes={"button button--cta"} value={"Request an invite"} />
-      </div>
+      <ConnectWallet />
     </div>
 
     <div className="site-teaser default-spacing">

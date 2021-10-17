@@ -3,46 +3,15 @@ const alchemyKey = process.env.REACT_APP_ALCHEMY_KEY;
 const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
 const web3 = createAlchemyWeb3(alchemyKey);
 
+const CONTACT_ADDRESS ="0x681b0227E558628Cb1AeeDA1F308Aa8BB9b7Cd37"
+
 const contractABI = require("./contract-abi.json");
-const contractAddress = "0x6f3f635A9762B47954229Ea479b4541eAF402A6A";
+const contractAddress = CONTACT_ADDRESS;
 
 export const player456Contract = new web3.eth.Contract(
   contractABI,
   contractAddress
 )
-
-export const connectWallet = async() => {
-  if (window.ethereum) {
-    try {
-      const addressArray = await window.ethereum.request({
-        method: "eth_requestAccounts",
-      });
-      const obj = {
-        status: "Connected to Metamask",
-        address: addressArray[0],
-      };
-      return obj;
-    } catch(err) {
-      return {
-        address: "",
-        status: "Error: " + err.message,
-      };
-    }
-  } else {
-    return {
-      address: "",
-      status: (
-        <span>
-          <p>
-            <a target="_blank" href={"https://metamask.io/download.html"}>
-                Please install Metamask to continue!
-            </a>
-          </p>
-        </span>
-      ),
-    };
-  }
-}
 
 export const getCurrentWalletConnected = async () => {
   if (window.ethereum) {
