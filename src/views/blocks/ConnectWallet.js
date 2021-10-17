@@ -49,12 +49,8 @@ const ConnectWallet = () => {
 
   useEffect(async () => {
     console.log(document.getElementById('metamask'));
+    afterClose();
     // const {address, status} = await getCurrentWalletConnected();
-
-    if(account) {
-      setWallet(account);
-    }
-    setStatus(status);
 
     if(window.ethereum) {
       setHasWallet(true);
@@ -65,27 +61,19 @@ const ConnectWallet = () => {
     addWalletListener();
   }, []);
 
-  const walletPressed = async() => {
+  async function connectWallet() {
     if (window.ethereum) {
       try {
-        const addressArray = await window.ethereum.request({
-          method: "eth_accounts",
-        });
-        if(addressArray.length > 0) {
-          console.log(addressArray[0])
-          return {
-            address: addressArray[0],
-          }
-        } else {
-          return {
-            address: ""
-          }
+        await activate(injected)
+        console.log("account: " + account)
+        const obj = {
+          status: "Ready to mint",
         }
+        return obj;
       } catch (err) {
         return {
-          address: "",
           status: "Error: " + err.message,
-        }
+        };
       }
     } else {
       return {
@@ -98,6 +86,11 @@ const ConnectWallet = () => {
         )
       }
     }
+  }
+
+  const walletPressed = async () => {
+    const walletResponse = await connectWallet();
+    setStatus(walletResponse.status);
   }
 
   function addWalletListener() { //TODO: implement
@@ -113,15 +106,22 @@ const ConnectWallet = () => {
         }
       });
     } else {
-      setHasWallet(false);
+      setStatus(
+        <p>
+          {" "}
+          🦊{" "}
+          <a target="_blank" href={`https://metamask.io/download.html`}>You must install Metamask, a virtual Ethereum wallet, in your browser.</a>
+        </p>
+      );
     }
   }
 
   async function disconnect() {
     try {
       await deactivate()
-    } catch(ex) {
-      console.log(ex);
+      setWallet("");
+    } catch(err) {
+      console.log("Error disconnecting: " + err);
     }
   }
 
@@ -143,8 +143,7 @@ return (
     <div className="provider-chooser-container">
       <div className={`provider-chooser no-metamask ${hasWallet ? "" : "hidden"}`}
            onClick={() => {
-             activate(injected)
-             walletPressed()
+              walletPressed()
             }}
            id={"metamask"}>
         <img src={metamaskLogo} />
@@ -154,17 +153,6 @@ return (
 
       <div className={`provider-chooser no-metamask ${hasWallet ? "hidden" : ""}`}>
             no metamask
-      </div>
-
-      <div className={"provider-chooser"}
-           onClick={() => {
-             activate(walletconnect)
-             walletPressed()
-            }}
-           id={"walletconnect"}>
-        <img src={walletConnectLogo} />
-        <h5>WalletConnect</h5>
-        <p>Scan with WalletConnect to connect</p>
       </div>
     </div>
     </Modal>
@@ -182,7 +170,7 @@ return (
     )}
     </p>
 
-    <button className="walletAddress" onClick={disconnect}>Disconnect</button>
+    {/* <button className="button" onClick={disconnect}>Disconnect</button> */}
   </div>
   )
 }
