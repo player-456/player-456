@@ -2,7 +2,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import Modal from "react-modal";
 // import Button from "../elements/Button";
-import ProviderChooser from "../elements/ProviderChooser";
+// import ProviderChooser from "../elements/ProviderChooser";
 
 // Elements
 import { metamaskLogo } from "../../util/walletLogos";
@@ -46,6 +46,49 @@ const ConnectWallet = () => {
     // addWalletListener();
   }, []);
 
+  const walletPressed = async(e) => {
+    console.log("hi " + e.currentTarget.id);
+    if (window.ethereum) {
+      if(e.target.id == "metamask") {
+        try {
+          await activate(injected)
+          const obj = {
+            status: "Ready to mint"
+          }
+          return obj;
+        } catch (err) {
+          return console.log(err);
+        }
+
+      } else if(e.target.id == "walletconnect") {
+        try {
+          await activate(walletconnect)
+          const obj = {
+            status: "Ready to mint"
+          }
+          return obj;
+        } catch (err) {
+          return console.log(err);
+        }
+      }
+    } else {
+      return {
+        status: (
+          <span>
+            <p>
+                You must install a wallet to continue!. We recommend using <a target="_blank" href={"https://metamask.io/download.html"}>MetaMask</a>.
+            </p>
+          </span>
+        )
+      }
+    }
+  }
+
+  // const walletPressed = async (e) => {
+  //   const walletResponse = await connectToWallet(e);
+  //   setStatus(walletResponse.status);
+  // }
+
 
   function addWalletListener() { //TODO: implement
     if (window.ethereum) {
@@ -78,7 +121,7 @@ return (
       overlayClassName="modal--overlay"
       className="modal--content"
     > */}
-        <div className="provider-chooser-container">
+        {/* <div className="provider-chooser-container">
           <ProviderChooser
             classes="provider-chooser"
             buttonId="metamask"
@@ -93,8 +136,21 @@ return (
             title="WalletConnect"
             desc="Scan with WalletConnect to connect"
           />
-        </div>
+        </div> */}
     {/* </Modal> */}
+    <div className="provider-chooser-container">
+      <div className={"provider-chooser"} onClick={walletPressed} id={"metamask"}>
+        <img src={metamaskLogo} />
+        <h5>Metamask</h5>
+        <p>Connect to your Metamask wallet</p>
+      </div>
+
+      <div className={"provider-chooser"} onClick={walletPressed} id={"walletconnect"}>
+        <img src={walletConnectLogo} />
+        <h5>WalletConnect</h5>
+        <p>Scan with WalletConnect to connect</p>
+      </div>
+    </div>
 
     <p className="walletAddress">
     {walletAddress.length > 0 ? (
