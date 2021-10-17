@@ -16,23 +16,36 @@ import { player456Contract, connectWallet, getCurrentWalletConnected } from "../
 
 Modal.setAppElement("#root");
 
+const modalStyles = {
+  overlay: {
+    backgroundColor: "rgba(0,0,0,.8)",
+  }
+}
+
 const ConnectWallet = () => {
   // State variables
   const [walletAddress, setWallet] = useState("");
+  const [balance, setBalance] = useState("");
   const [hasWallet, setHasWallet] = useState("");
-  const [modalIsOpen, setIsOpen] = useState(false);
   const [status, setStatus] = useState("");
 
-  function openModal() {
-    setIsOpen(true);
+  const [modalIsOpen, setIsOpen] = useState(false);
+  const [wasOpen, setWasOpen] = useState(false);
+
+  function afterOpenModal() {
+    setTimeout(() => {
+      setWasOpen(true);
+    }, 0);
   }
 
-  function closeModal() {
-    setIsOpen(false);
+  function afterClose() {
+    setTimeout(() => {
+      setWasOpen(false);
+    }, 0);
   }
 
   // These vars come from web3-react core
-  const { active, account, library, connector, activate, deactivate } = useWeb3React();
+  const { active, account, library, connector, activate, deactivate, chainId } = useWeb3React();
 
   useEffect(async () => {
     console.log(document.getElementById('metamask'));
@@ -43,32 +56,35 @@ const ConnectWallet = () => {
     }
     setStatus(status);
 
-    // addWalletListener();
+    if(window.ethereum) {
+      setHasWallet(true);
+    } else {
+      setHasWallet(false);
+    }
+
+    addWalletListener();
   }, []);
 
-  const walletPressed = async(e) => {
-    console.log("hi " + e.currentTarget.id);
+  const walletPressed = async() => {
     if (window.ethereum) {
-      if(e.target.id == "metamask") {
-        try {
-          await activate(injected)
-          const obj = {
-            status: "Ready to mint"
+      try {
+        const addressArray = await window.ethereum.request({
+          method: "eth_accounts",
+        });
+        if(addressArray.length > 0) {
+          console.log(addressArray[0])
+          return {
+            address: addressArray[0],
           }
-          return obj;
-        } catch (err) {
-          return console.log(err);
+        } else {
+          return {
+            address: ""
+          }
         }
-
-      } else if(e.target.id == "walletconnect") {
-        try {
-          await activate(walletconnect)
-          const obj = {
-            status: "Ready to mint"
-          }
-          return obj;
-        } catch (err) {
-          return console.log(err);
+      } catch (err) {
+        return {
+          address: "",
+          status: "Error: " + err.message,
         }
       }
     } else {
@@ -83,12 +99,6 @@ const ConnectWallet = () => {
       }
     }
   }
-
-  // const walletPressed = async (e) => {
-  //   const walletResponse = await connectToWallet(e);
-  //   setStatus(walletResponse.status);
-  // }
-
 
   function addWalletListener() { //TODO: implement
     if (window.ethereum) {
@@ -107,61 +117,72 @@ const ConnectWallet = () => {
     }
   }
 
+  async function disconnect() {
+    try {
+      await deactivate()
+    } catch(ex) {
+      console.log(ex);
+    }
+  }
+
 return (
   <div className="main-cta-container">
-    {/* <button className={`button button--cta`} onClick={openModal}>
+    <button className={"button button--cta"} onClick={() => setIsOpen(true)}>
       Connect wallet
     </button>
 
     <Modal
-      isOpen={modalIsOpen}
-      onRequestClose={closeModal}
-      shouldCloseOnOverlayClick={true}
-      contentLabel="Modal"
-      overlayClassName="modal--overlay"
-      className="modal--content"
-    > */}
-        {/* <div className="provider-chooser-container">
-          <ProviderChooser
-            classes="provider-chooser"
-            buttonId="metamask"
-            logo={metamaskLogo}
-            title="Metamask"
-            desc="Connect to your Metamask wallet"
-          />
-          <ProviderChooser
-            classes="provider-chooser"
-            buttonId="walletconnect"
-            logo={walletConnectLogo}
-            title="WalletConnect"
-            desc="Scan with WalletConnect to connect"
-          />
-        </div> */}
-    {/* </Modal> */}
+        isOpen={modalIsOpen}
+        onRequestClose={() => setIsOpen(false)}
+        className="modal--content"
+        closeTimeoutMS={500}
+        onAfterOpen={afterOpenModal}
+        onAfterClose={afterClose}
+        style={modalStyles}
+      >
     <div className="provider-chooser-container">
-      <div className={"provider-chooser"} onClick={walletPressed} id={"metamask"}>
+      <div className={`provider-chooser no-metamask ${hasWallet ? "" : "hidden"}`}
+           onClick={() => {
+             activate(injected)
+             walletPressed()
+            }}
+           id={"metamask"}>
         <img src={metamaskLogo} />
         <h5>Metamask</h5>
         <p>Connect to your Metamask wallet</p>
       </div>
 
-      <div className={"provider-chooser"} onClick={walletPressed} id={"walletconnect"}>
+      <div className={`provider-chooser no-metamask ${hasWallet ? "hidden" : ""}`}>
+            no metamask
+      </div>
+
+      <div className={"provider-chooser"}
+           onClick={() => {
+             activate(walletconnect)
+             walletPressed()
+            }}
+           id={"walletconnect"}>
         <img src={walletConnectLogo} />
         <h5>WalletConnect</h5>
         <p>Scan with WalletConnect to connect</p>
       </div>
     </div>
+    </Modal>
+
 
     <p className="walletAddress">
     {walletAddress.length > 0 ? (
       "Connected: " +
       String(walletAddress).substring(0, 4) +
       "..." +
-      String(walletAddress).substring(38)
+      String(walletAddress).substring(38) +
+      ""
     ) : (
       <span></span>
     )}
     </p>
+
+    <button className="walletAddress" onClick={disconnect}>Disconnect</button>
   </div>
   )
 }

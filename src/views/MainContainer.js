@@ -10,6 +10,9 @@ import Roadmap from "./blocks/Roadmap";
 import Faq from "./blocks/Faq";
 import Team from "./blocks/Team";
 import Footer from "./blocks/Footer";
+import ConnectWallet from "./blocks/ConnectWallet";
+
+import SiteTeaser from "../img/site-teaser.gif";
 
 
 const MainContainer = () => {
@@ -18,7 +21,20 @@ const MainContainer = () => {
   return (
       <main className="wrapper">
         <Header />
-        <Intro />
+        <section>
+          <div className="intro intro-content">
+            <h2 className="h4 start-date">
+              Games starting October 24
+            </h2>
+
+            <ConnectWallet />
+          </div>
+
+          <div className="site-teaser default-spacing">
+            <img src={SiteTeaser} alt="456 players, 1 winner, 11.4 eth prize" />
+          </div>
+
+        </section>
         <Divider />
         <Rules />
         <Divider />
