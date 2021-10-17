@@ -16,16 +16,18 @@ import Faq from "./blocks/Faq";
 import Team from "./blocks/Team";
 import Footer from "./blocks/Footer";
 
+// web3 stuff
+import { injected, walletLink } from "../util/connectors";
 import { player456Contract, connectWallet, getCurrentWalletConnected } from "../util/interactions";
 
 const MainContainer = () => {
   // State variables
-  const [walletAddress, setWallet] = useState("");
+  // const [walletAddress, setWallet] = useState("");
   const [status, setStatus] = useState("");
 
   useEffect(async () => {
-    const {address, status} = await getCurrentWalletConnected();
-    setWallet(address);
+    // const {address, status} = await getCurrentWalletConnected();
+    // setWallet(address);
     setStatus(status);
 
     addWalletListener();
@@ -33,6 +35,7 @@ const MainContainer = () => {
 
   function addWalletListener() { //TODO: implement
     if (window.ethereum) {
+
       window.ethereum.on("accountsChanged", (accounts) => {
         if(accounts.length > 0) {
           setWallet(accounts[0]);
@@ -53,10 +56,35 @@ const MainContainer = () => {
     }
   }
 
-  const connectToWallet = async () => {
-    const walletResponse = await connectWallet();
-    setStatus(walletResponse.status);
-    setWallet(walletResponse.address);
+  async function connectToWallet(e) {
+    if (window.ethereum) {
+      try {
+        if(e.target.id == "metamask") {
+          await activate(injected)
+        } else if (e.target.id == "walletLink") {
+          await activate(walletLink)
+        }
+        console.log("account: " + account)
+        const obj = {
+          status: "Ready to mint",
+        }
+        return obj;
+      } catch (err) {
+        return {
+          status: "Error: " + err.message,
+        };
+      }
+    } else {
+      return {
+        status: (
+          <span>
+            <p>
+                You must install a wallet to continue!. We recommend using <a target="_blank" href={"https://metamask.io/download.html"}>MetaMask</a>.
+            </p>
+          </span>
+        )
+      }
+    }
   }
 
   // Return the UI
