@@ -31,6 +31,17 @@ body {
   visibility: hidden !important;
 }
 
+.alert.alert__error {
+  color: $pink;
+  text-align: center;
+}
+
+.wallet-address {
+  position: absolute;
+  top: 0;
+  left: 16px;
+}
+
 // Header
 header {
   padding: 24px auto;

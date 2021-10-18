@@ -12,7 +12,7 @@ import { walletConnectLogo } from "../../util/walletLogos";
 // web3 stuff
 import { useWeb3React } from "@web3-react/core";
 import { injected, walletLink, walletconnect } from "../../util/connectors";
-import { player456Contract, connectWallet, getCurrentWalletConnected } from "../../util/interactions";
+import { player456Contract, getCurrentWalletConnected, connectToWallet, mintNFT } from "../../util/interactions";
 
 Modal.setAppElement("#root");
 
@@ -28,6 +28,7 @@ const ConnectWallet = () => {
   const [balance, setBalance] = useState("");
   const [hasWallet, setHasWallet] = useState("");
   const [status, setStatus] = useState("");
+  const [totalMinted, setTotalMinted] = useState("");
 
   const [modalIsOpen, setIsOpen] = useState(false);
   const [wasOpen, setWasOpen] = useState(false);
@@ -48,9 +49,11 @@ const ConnectWallet = () => {
   const { active, account, library, connector, activate, deactivate, chainId } = useWeb3React();
 
   useEffect(async () => {
-    console.log(document.getElementById('metamask'));
-    afterClose();
-    // const {address, status} = await getCurrentWalletConnected();
+    // Regain wallet connection on page reload
+    const { address, status, totalMinted } = await getCurrentWalletConnected();
+    setWallet(address);
+    setStatus(status);
+    setTotalMinted(totalMinted);
 
     if(window.ethereum) {
       setHasWallet(true);
@@ -61,48 +64,16 @@ const ConnectWallet = () => {
     addWalletListener();
   }, []);
 
-  async function connectWallet() {
+  function addWalletListener() {
     if (window.ethereum) {
-      try {
-        await activate(injected)
-        console.log("account: " + account)
-        const obj = {
-          status: "Ready to mint",
-        }
-        return obj;
-      } catch (err) {
-        return {
-          status: "Error: " + err.message,
-        };
-      }
-    } else {
-      return {
-        status: (
-          <span>
-            <p>
-                You must install a wallet to continue!. We recommend using <a target="_blank" href={"https://metamask.io/download.html"}>MetaMask</a>.
-            </p>
-          </span>
-        )
-      }
-    }
-  }
-
-  const walletPressed = async () => {
-    const walletResponse = await connectWallet();
-    setStatus(walletResponse.status);
-  }
-
-  function addWalletListener() { //TODO: implement
-    if (window.ethereum) {
-
       window.ethereum.on("accountsChanged", (accounts) => {
-        if(accounts.length > 0) {
+        if (accounts.length > 0) {
           setWallet(accounts[0]);
-          setStatus("Write a message above");
+          setStatus("👆🏽 Write a message in the text-field above.");
+          setTotalMinted(totalMinted);
         } else {
           setWallet("");
-          setStatus("Connect to Metamask.");
+          setStatus("🦊 Connect to Metamask using the top right button.");
         }
       });
     } else {
@@ -110,24 +81,41 @@ const ConnectWallet = () => {
         <p>
           {" "}
           🦊{" "}
-          <a target="_blank" href={`https://metamask.io/download.html`}>You must install Metamask, a virtual Ethereum wallet, in your browser.</a>
+          <a target="_blank" href={`https://metamask.io/download.html`}>
+            You must install Metamask, a virtual Ethereum wallet, in your
+            browser.
+          </a>
         </p>
       );
     }
   }
 
-  async function disconnect() {
-    try {
-      await deactivate()
-      setWallet("");
-    } catch(err) {
-      console.log("Error disconnecting: " + err);
-    }
+  const connectWalletPressed = async () => {
+    const walletResponse = await connectToWallet();
+    setStatus(walletResponse.status);
+    setWallet(walletResponse.address);
+    setTotalMinted(walletResponse.totalMinted);
+
+    console.log(totalMinted);
+    // Close modal:
+    setWasOpen(false);
+    setIsOpen(false);
+  };
+
+  const mintNow = async () => {
+    // Check for address one more time
+    const { address, status, totalMinted } = await getCurrentWalletConnected();
+    setWallet(address);
+    setStatus(status);
+    setTotalMinted(totalMinted);
+
+    console.log("Minting with address " + walletAddress);
+    mintNFT(walletAddress);
   }
 
 return (
   <div className="main-cta-container">
-    <button className={"button button--cta"} onClick={() => setIsOpen(true)}>
+    <button className={`button button--cta ${walletAddress.length > 0 ? "hidden" : ""}`} onClick={() => setIsOpen(true)}>
       Connect wallet
     </button>
 
@@ -143,7 +131,7 @@ return (
     <div className="provider-chooser-container">
       <div className={`provider-chooser no-metamask ${hasWallet ? "" : "hidden"}`}
            onClick={() => {
-              walletPressed()
+              connectWalletPressed()
             }}
            id={"metamask"}>
         <img src={metamaskLogo} />
@@ -157,8 +145,18 @@ return (
     </div>
     </Modal>
 
+    <button className={`button button--cta ${walletAddress.length > 0 ? "" : "hidden"}`} onClick={() => {mintNow()}} id={"mintNowButton"}>
+       Mint for 0.55 ETH
+    </button>
 
-    <p className="walletAddress">
+    <p className="alert alert__error hidden" id="mintingError">
+    </p>
+
+    <p className="total-minted">
+      Minted: {totalMinted ? (totalMinted) : ("???")} / 456
+    </p>
+
+    <p className="wallet-address">
     {walletAddress.length > 0 ? (
       "Connected: " +
       String(walletAddress).substring(0, 4) +
@@ -166,7 +164,7 @@ return (
       String(walletAddress).substring(38) +
       ""
     ) : (
-      <span></span>
+      "Not connected"
     )}
     </p>
 
