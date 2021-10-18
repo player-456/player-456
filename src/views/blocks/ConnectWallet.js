@@ -6,13 +6,13 @@ import Modal from "react-modal";
 
 // Elements
 import { metamaskLogo } from "../../util/walletLogos";
-import { walletConnectLogo } from "../../util/walletLogos";
+// import { walletConnectLogo } from "../../util/walletLogos";
 
 
 // web3 stuff
-import { useWeb3React } from "@web3-react/core";
-import { injected, walletLink, walletconnect } from "../../util/connectors";
-import { player456Contract, getCurrentWalletConnected, connectToWallet, mintNFT } from "../../util/interactions";
+// import { useWeb3React } from "@web3-react/core";
+// import { injected, walletLink, walletconnect } from "../../util/connectors";
+import { gameInfo, getCurrentWalletConnected, connectToWallet, mintNFT } from "../../util/interactions";
 
 Modal.setAppElement("#root");
 
@@ -25,7 +25,8 @@ const modalStyles = {
 const ConnectWallet = () => {
   // State variables
   const [walletAddress, setWallet] = useState("");
-  const [balance, setBalance] = useState("");
+  const [playerEthBalance, setplayerEthBalance] = useState("");
+  const [playerChain, setPlayerChain] = useState("");
   const [hasWallet, setHasWallet] = useState("");
   const [status, setStatus] = useState("");
   const [totalMinted, setTotalMinted] = useState("");
@@ -45,43 +46,93 @@ const ConnectWallet = () => {
     }, 0);
   }
 
+  /**
+   * Makes sure they have enough funds
+   * @param {*} balance Player's ETH balance
+   */
+  function playerHasFunds(balance) {
+    const mintButtonElem = document.getElementById("mintNowButton"),
+          mintErrorElem = document.getElementById("mintingError");
+
+    if(balance < gameInfo.price) {
+      mintButtonElem.innerHTML = "Insufficient funds"
+      mintButtonElem.setAttribute("disabled", true);
+
+      mintErrorElem.innerHTML = "Minting cost is 0.055 ETH + gas fees"
+      mintErrorElem.classList.remove("hidden");
+    } else {
+      mintButtonElem.innerHTML = "Mint for 0.055 ETH"
+      mintButtonElem.removeAttribute("disabled");
+
+      mintErrorElem.innerHTML = ""
+      mintErrorElem.classList.add("hidden");
+    }
+  }
+
+  /**
+   * Resets state variables and realoads window
+   */
+   function reset() {
+      window.location.reload();
+      setTotalMinted("");
+      setplayerEthBalance("");
+      setPlayerChain("");
+    }
+
   // These vars come from web3-react core
-  const { active, account, library, connector, activate, deactivate, chainId } = useWeb3React();
+  // const { active, account, library, connector, activate, deactivate, chainId } = useWeb3React();
 
   useEffect(async () => {
     // Regain wallet connection on page reload
-    const { address, status, totalMinted } = await getCurrentWalletConnected();
+    const { address, totalMinted, playerBalance, playerChain } = await getCurrentWalletConnected();
     setWallet(address);
     setStatus(status);
     setTotalMinted(totalMinted);
+    setplayerEthBalance(playerBalance);
+    setPlayerChain(playerChain);
 
     if(window.ethereum) {
       setHasWallet(true);
+      playerHasFunds(playerBalance);
     } else {
       setHasWallet(false);
     }
 
+    // Wallet listener
     addWalletListener();
+
   }, []);
 
-  function addWalletListener() {
+  async function addWalletListener() {
     if (window.ethereum) {
+      const { address, totalMinted, playerBalance, playerChain } = await getCurrentWalletConnected();
       window.ethereum.on("accountsChanged", (accounts) => {
-        if (accounts.length > 0) {
-          setWallet(accounts[0]);
-          setStatus("👆🏽 Write a message in the text-field above.");
-          setTotalMinted(totalMinted);
-        } else {
-          setWallet("");
-          setStatus("🦊 Connect to Metamask using the top right button.");
-        }
+        setWallet(accounts);
+        setStatus(status);
+        setTotalMinted(totalMinted);
+        setplayerEthBalance(playerBalance);
+        setPlayerChain(playerChain);
       });
+
+      playerHasFunds(playerBalance);
+
+      window.ethereum.on("chainChanged", () => {
+        reset();
+      })
+
+      window.ethereum.on("accountsChanged", () => {
+        reset();
+      })
+
+      window.ethereum.on("disconnect", () => {
+        reset();
+      })
     } else {
       setStatus(
         <p>
           {" "}
           🦊{" "}
-          <a target="_blank" href={`https://metamask.io/download.html`}>
+          <a target="_blank" href={`https://metamask.io/download.html`} rel="noreferrer">
             You must install Metamask, a virtual Ethereum wallet, in your
             browser.
           </a>
@@ -90,25 +141,26 @@ const ConnectWallet = () => {
     }
   }
 
+  /**
+   * Connects user's wallet
+   */
   const connectWalletPressed = async () => {
-    const walletResponse = await connectToWallet();
-    setStatus(walletResponse.status);
-    setWallet(walletResponse.address);
-    setTotalMinted(walletResponse.totalMinted);
+    const { address, totalMinted, playerBalance, playerChain } = await connectToWallet();
+    setWallet(address);
+    setTotalMinted(totalMinted);
+    setplayerEthBalance(playerBalance);
+    setPlayerChain(playerChain);
 
-    console.log(totalMinted);
+    playerHasFunds(playerBalance);
     // Close modal:
     setWasOpen(false);
     setIsOpen(false);
   };
 
+  /**
+   * Triggers mint
+   */
   const mintNow = async () => {
-    // Check for address one more time
-    const { address, status, totalMinted } = await getCurrentWalletConnected();
-    setWallet(address);
-    setStatus(status);
-    setTotalMinted(totalMinted);
-
     console.log("Minting with address " + walletAddress);
     mintNFT(walletAddress);
   }
@@ -134,7 +186,7 @@ return (
               connectWalletPressed()
             }}
            id={"metamask"}>
-        <img src={metamaskLogo} />
+        <img src={metamaskLogo} alt="MetaMask" />
         <h5>Metamask</h5>
         <p>Connect to your Metamask wallet</p>
       </div>
@@ -145,8 +197,12 @@ return (
     </div>
     </Modal>
 
-    <button className={`button button--cta ${walletAddress.length > 0 ? "" : "hidden"}`} onClick={() => {mintNow()}} id={"mintNowButton"}>
-       Mint for 0.55 ETH
+    <button
+      className={`button button--cta ${walletAddress.length > 0 ? "" : "hidden"}`}
+      onClick={() => {mintNow()}}
+      id={"mintNowButton"}
+    >
+      Mint for 0.055 ETH
     </button>
 
     <p className="alert alert__error hidden" id="mintingError">

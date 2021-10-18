@@ -1,11 +1,39 @@
+import {supportedChains} from "./chains";
+
 require("dotenv").config();
 const alchemyKey = process.env.REACT_APP_ALCHEMY_KEY;
+const requestedChain = process.env.REACT_APP_CURRENT_NETWORK;
 const contractABI = require("./contract-abi.json");
 const contractAddress = "0x681b0227E558628Cb1AeeDA1F308Aa8BB9b7Cd37";
 const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
 const web3 = createAlchemyWeb3(alchemyKey);
 
-let playerBalance;
+const playerInfo = {
+  playerBalance: "'",
+  playerAddress: "",
+  playerChain: "",
+}
+
+export const gameInfo = {
+  price: .055,
+  chainId: null,
+  networkId: null,
+  mm_id: "",
+  chainName: ""
+}
+
+function setGameChainInfo() {
+  for(let i = 0; i < supportedChains.length; i++) {
+    if(supportedChains[i].chain_id == requestedChain) {
+      gameInfo.chainId = supportedChains[i].chain_id;
+      gameInfo.networkId = supportedChains[i].network_id;
+      gameInfo.mm_id = supportedChains[i].mm_id;
+      gameInfo.chainName = supportedChains[i].name;
+    }
+  }
+}
+setGameChainInfo();
+
 
 export const player456Contract = new web3.eth.Contract(
   contractABI,
@@ -18,15 +46,30 @@ export const connectToWallet = async () => {
       const addressArray = await window.ethereum.request({
         method: "eth_requestAccounts",
       });
-      // Get player's balance
-      getPlayerBalance(addressArray[0]);
+      // Set player info
+      setPlayerBalance(addressArray[0]);
+      setPlayerAddress(addressArray[0]);
+      setPlayerChain();
+      console.log(playerInfo);
 
-      const obj = {
-        status: "👆🏽 Write a message in the text-field above.",
+      if (window.ethereum.networkVersion !== gameInfo.networkId) {
+        try {
+          await window.ethereum.request({
+            method: "wallet_switchEthereumChain", params: [{
+              chainId: gameInfo.mm_id
+            }]
+          })
+        } finally {
+          window.location.reload();
+        }
+      }
+
+      return {
         address: addressArray[0],
-        totalMinted: await player456Contract.methods.totalSupply().call()
-      };
-      return obj;
+        totalMinted: await player456Contract.methods.totalSupply().call(),
+        playerBalance: playerInfo.playerBalance,
+        playerChain: playerInfo.playerChain
+      }
     } catch (err) {
       return {
         address: "",
@@ -36,41 +79,44 @@ export const connectToWallet = async () => {
   } else {
     return {
       address: "",
-      status: (
-        <span>
-          <p>
-            {" "}
-            🦊{" "}
-            <a target="_blank" href={`https://metamask.io/download.html`}>
-              You must install Metamask, a virtual Ethereum wallet, in your
-              browser.
-            </a>
-          </p>
-        </span>
-      ),
     };
   }
 };
 
 export const getCurrentWalletConnected = async () => {
   if (window.ethereum) {
+    if (window.ethereum.networkVersion !== gameInfo.networkId) {
+      try {
+        await window.ethereum.request({
+          method: "wallet_switchEthereumChain", params: [{
+            chainId: gameInfo.mm_id
+          }]
+        })
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
     try {
       const addressArray = await window.ethereum.request({
         method: "eth_accounts",
       });
       if (addressArray.length > 0) {
-        // Get player's balance
-        getPlayerBalance(addressArray[0]);
+        // Set player info
+        setPlayerBalance(addressArray[0]);
+        setPlayerAddress(addressArray[0]);
+        setPlayerChain();
+        console.log(playerInfo);
 
         return {
           address: addressArray[0],
-          status: "👆🏽 Write a message in the text-field above.",
-          totalMinted: await player456Contract.methods.totalSupply().call()
+          totalMinted: await player456Contract.methods.totalSupply().call(),
+          playerBalance: playerInfo.playerBalance,
+          playerChain: playerInfo.playerChain
         };
       } else {
         return {
           address: "",
-          status: "🦊 Connect to Metamask using the top right button.",
         };
       }
     } catch (err) {
@@ -82,64 +128,42 @@ export const getCurrentWalletConnected = async () => {
   } else {
     return {
       address: "",
-      status: (
-        <span>
-          <p>
-            {" "}
-            🦊{" "}
-            <a target="_blank" href={`https://metamask.io/download.html`}>
-              You must install Metamask, a virtual Ethereum wallet, in your
-              browser.
-            </a>
-          </p>
-        </span>
-      ),
     };
   }
 };
 
-
-async function getPlayerBalance(playerAddress) {
-  web3.eth.getBalance(playerAddress, function (err, ret) {
-    console.log("balance from playerBalance func: " + ret / Math.pow(10, 18))
+// Runs when first connected, and on page reload
+async function setPlayerBalance(address) {
+  web3.eth.getBalance(address, function (err, ret) {
     const balance = (ret / Math.pow(10, 18)).toFixed(4)
 
-    playerBalance = balance;
+    playerInfo.playerBalance = balance;
   })
 }
 
-
-async function addressLookup() {
-
+function setPlayerAddress(address) {
+  playerInfo.playerAddress = address;
 }
 
-async function loadContract() {
-  return new web3.eth.Contract(contractABI, contractAddress);
+function setPlayerChain() {
+  playerInfo.playerNetwork = window.ethereum.networkVersion;
 }
 
-export const mintNFT = async (playerAddress) => {
+
+export const mintNFT = async () => {
   const totSupply = await player456Contract.methods.totalSupply().call();
-  const currentBalance = playerBalance;
+  const currentBalance = playerInfo.playerBalance;
 
   console.log("network: " + window.ethereum.networkVersion);
   console.log("total Supply: " + totSupply);
 
-  const price = .055 * 10 ** 18;
-  const currentAddress = playerAddress;
-
   // we need:
   // 1. from address
+  const fromAddress = playerInfo.playerAddress;
   // 2. eth price - .055 * 10 ** 18
+  const mintPrice = gameInfo.price * 10 ** 18;
+  const toAddress = contractAddress;
 
-  console.log("C: " + currentBalance + ", p: " + price);
-  if(currentBalance < price) {
-
-    document.getElementById("mintingError").innerHTML = "You do not have enough ETH!";
-    document.getElementById("mintingError").classList.remove("hidden");
-    console.log("not enough eth");
-
-    return;
-  }
   // 3. how many to mint
   // 4.
 }

@@ -3,7 +3,7 @@ import React from "react";
 // Blocks
 import Divider from "./elements/SectionDivider";
 import Header from "./blocks/Header";
-import Intro from "./blocks/Intro";
+// import Intro from "./blocks/Intro";
 import Rules from "./blocks/Rules";
 import Characters from "./blocks/Characters";
 import Roadmap from "./blocks/Roadmap";
