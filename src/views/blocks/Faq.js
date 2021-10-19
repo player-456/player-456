@@ -25,9 +25,14 @@ return (
 
           <h4>4. What if I lose?</h4>
 
-          <p>You only get one shot at the 456-player pool. </p>
+          <p>You only get one shot at your 456-player pool game.</p>
 
-          <p>However, we will have 2 slotted games (after the 5th game and after the 10th game) for the eliminated players to get another chance at a prize. The first round's prize will consist of 100% of the royalty fees up to that point. The second round's prize will be 45.6 ETH</p>
+          <p>However, we will have 2 slotted games &ndash; after the 5th game and after the 10th game &ndash; for eliminated players to get another chance at a prize.</p>
+
+          <p>The first prize for eliminated players will consist of 100% of the royalty fees up to that point. The second prize for eliminated players will be the rest of the royalties collected plus 10 ETH.</p>
+
+          <p>You'll need to keep your eliminated NFT to participate in the elimination games.</p>
+
 
 
 

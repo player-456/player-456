@@ -12,9 +12,11 @@
   display: flex;
   margin-bottom: 2rem;
   flex-direction: column;
+  align-items: center;
 
   @include breakpoint(sm) {
     flex-direction: row;
+    align-items: initial;
   }
 }
 
@@ -33,9 +35,11 @@
 
 .character--info {
   padding: 0 1rem;
+  text-align: center;
 
   @include breakpoint(sm) {
     padding: 0 2rem;
+    text-align: left;
   }
 
   & p {
