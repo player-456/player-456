@@ -1,0 +1,14 @@
+.social-links {
+  display: flex;
+  justify-content: center;
+  margin-top: 3rem;
+
+  a {
+    margin: 0 1rem;
+
+    & > img {
+      width: 69px;
+      display: block;
+    }
+  }
+}

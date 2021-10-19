@@ -1,0 +1,12 @@
+header {
+  padding: 24px auto;
+  text-align: center;
+
+  & .logo {
+    max-width: 100%;
+
+    @include breakpoint(sm) {
+      max-width: 562px;
+    }
+  }
+}

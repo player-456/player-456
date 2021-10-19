@@ -1,0 +1,9 @@
+.team-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding-bottom: 3rem;
+
+  @include breakpoint(sm) {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}

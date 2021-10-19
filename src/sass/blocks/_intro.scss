@@ -1,0 +1,30 @@
+.intro-content {
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex-direction: column;
+
+  @include breakpoint(sm) {
+    height: 380px;
+  }
+}
+
+.main-cta-container {
+  padding: 24px 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.site-teaser {
+  text-align: center;
+
+  & img {
+    max-width: 100%;
+
+    @include breakpoint(sm) {
+      width: 365px;
+    }
+  }
+}

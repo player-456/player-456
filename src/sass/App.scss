@@ -4,139 +4,27 @@
 @import "utils/mixins";
 
 // Globals
+@import "globals/globals";
 @import "globals/typography";
 @import "globals/layout";
 
+
 // Elements
 @import "elements/button";
+@import "elements/modal";
 @import "elements/list";
 @import "elements/team-member";
 
 // Blocks
+@import "blocks/header";
+@import "blocks/intro";
 @import "blocks/characters";
 @import "blocks/roadmap";
+@import "blocks/team";
+@import "blocks/social";
+@import "blocks/footer";
 
-// Global styles
-html {
-  margin: 0;
-  padding: 0;
-}
 
-body {
-  background: $black;
-}
 
-.hidden {
-  display: none !important;
-  visibility: hidden !important;
-}
 
-.alert.alert__error {
-  color: $pink;
-  text-align: center;
-}
 
-.wallet-address {
-  position: absolute;
-  top: 0;
-  left: 16px;
-}
-
-// Header
-header {
-  padding: 24px auto;
-  text-align: center;
-
-  & .logo {
-    max-width: 100%;
-
-    @include breakpoint(sm) {
-      max-width: 562px;
-    }
-  }
-}
-
-// Intro
-.intro-content {
-  height: 200px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  flex-direction: column;
-
-  @include breakpoint(sm) {
-    height: 380px;
-  }
-}
-
-// Button
-.button {
-  border: 1px solid $white;
-  border-radius: 4px;
-  background: transparent;
-  color: $white;
-  display: inline;
-  padding: 8px 92px;
-  font-family: 'PoeRedcoatNew', Helvetica, Arial, sans-serif;
-  font-size: 20px;
-  cursor: pointer;
-}
-
-.main-cta-container {
-  padding: 24px 0;
-  display: flex;
-  flex-direction: column;
-}
-
-.site-teaser {
-  text-align: center;
-
-  & img {
-    max-width: 100%;
-
-    @include breakpoint(sm) {
-      width: 365px;
-    }
-  }
-}
-
-.team-grid {
-  // display: flex;
-  // flex-wrap: wrap;
-  // justify-content: center;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  padding-bottom: 3rem;
-
-  @include breakpoint(sm) {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-  }
-}
-
-.social-links {
-  display: flex;
-  justify-content: center;
-  margin-top: 3rem;
-
-  a {
-    margin: 0 1rem;
-
-    & > img {
-      width: 69px;
-      display: block;
-    }
-  }
-}
-
-// Footer
-footer {
-  text-align: center;
-  padding-bottom: 2rem;
-
-  & .disclaimer {
-    font-size: 10px;
-    color: $gray-medium;
-  }
-}

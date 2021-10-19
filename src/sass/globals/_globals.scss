@@ -1,0 +1,24 @@
+html {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: $black;
+}
+
+.hidden {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+.alert.alert__error {
+  color: $pink;
+  text-align: center;
+}
+
+.wallet-address {
+  position: absolute;
+  top: 0;
+  left: 16px;
+}
