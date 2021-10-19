@@ -8,7 +8,7 @@ import Larissa from "../../img/team/larissa-site-ready.gif"
 import Meir from "../../img/team/meir-site-ready.gif"
 import Stevan from "../../img/team/stevan-site-ready.gif"
 import Subi from "../../img/team/subi-site-ready.gif"
-// import Gabe from "../../img/team/gabe-site-ready.gif"
+import Gabe from "../../img/team/gabe-site-ready.gif"
 
 const Team = () => {
 return (
@@ -36,7 +36,7 @@ return (
             title="Blockchain"
           />
           <TeamMember
-            img={Placeholder}
+            img={Gabe}
             linkUrl="https://twitter.com/orzo__tweets"
             linkText="@gabe"
             title="Frontend"
