@@ -16,6 +16,6 @@ function getLibrary(provider) {
 ReactDOM.render(
     <Web3ReactProvider getLibrary={getLibrary}>
       <MainContainer />
-      </Web3ReactProvider>,
+    </Web3ReactProvider>,
   document.getElementById("root")
 )

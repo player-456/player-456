@@ -57,13 +57,17 @@ header {
 }
 
 // Intro
-.intro {
-  height: 380px;
+.intro-content {
+  height: 200px;
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
   flex-direction: column;
+
+  @include breakpoint(sm) {
+    height: 380px;
+  }
 }
 
 // Button
@@ -89,19 +93,26 @@ header {
   text-align: center;
 
   & img {
-    width: 365px;
+    max-width: 100%;
+
+    @include breakpoint(sm) {
+      width: 365px;
+    }
   }
 }
 
 .team-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  // display: flex;
+  // flex-wrap: wrap;
+  // justify-content: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   padding-bottom: 3rem;
-}
 
-.team-content {
-  text-align: center;
+  @include breakpoint(sm) {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
 }
 
 .social-links {

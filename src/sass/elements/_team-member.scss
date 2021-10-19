@@ -1,10 +1,23 @@
 .team-member {
-  margin: 0 1rem;
+  margin: 0 1rem 3rem;
   text-align: center;
 
+  & p {
+    margin-bottom: 0;
+  }
+
+  & p + p {
+    margin-top: 0;
+  }
+
   & img {
-    width: 167px;
+    max-width: 100%;
     display: block;
+    margin: 0 auto;
+
+    @include breakpoint(sm) {
+      width: 167px;
+    }
   }
 
   & a {

@@ -3,6 +3,12 @@ import TeamMember from "../elements/TeamMember";
 import Placeholder from "../../img/team/Placeholder.png";
 import DiscordIcon from "../../img/discord-icon.png";
 import TwitterIcon from "../../img/twitter-icon.png";
+import Clarina from "../../img/team/clarina-site-ready.gif"
+import Larissa from "../../img/team/larissa-site-ready.gif"
+import Meir from "../../img/team/meir-site-ready.gif"
+import Stevan from "../../img/team/stevan-site-ready.gif"
+import Subi from "../../img/team/subi-site-ready.gif"
+// import Gabe from "../../img/team/gabe-site-ready.gif"
 
 const Team = () => {
 return (
@@ -12,19 +18,19 @@ return (
 
         <div className="team-grid">
           <TeamMember
-            img={Placeholder}
-            linkUrl="#"
+            img={Clarina}
+            linkUrl="https://twitter.com/LittleTomato444"
             linkText="@clarina"
             title="Art"
           />
           <TeamMember
-            img={Placeholder}
+            img={Larissa}
             linkUrl="https://twitter.com/ItsLarissaWith1"
             linkText="@larissa"
             title="Games"
           />
           <TeamMember
-            img={Placeholder}
+            img={Stevan}
             linkUrl="https://twitter.com/stevyhacker"
             linkText="@stevan"
             title="Blockchain"
@@ -33,10 +39,16 @@ return (
             img={Placeholder}
             linkUrl="https://twitter.com/orzo__tweets"
             linkText="@gabe"
-            title="Site"
+            title="Frontend"
           />
           <TeamMember
-            img={Placeholder}
+            img={Subi}
+            linkUrl="https://www.linkedin.com/in/subimurugan"
+            linkText="@subi"
+            title="Backend"
+          />
+          <TeamMember
+            img={Meir}
             linkUrl="https://twitter.com/iota0xf"
             linkText="@meir"
             title="Ops"
@@ -44,9 +56,10 @@ return (
         </div>
 
         <div className="team-content">
-          <p>We know there's money involved in this game, and when you choose to get one of the 456 NFTs you're placing a lot trust in us. That's why we've chosen to lift our anonymity, clarify our roadmap and show people the thought behind this project. Feel free to ask any of us anything, we're part of the community.</p>
+          <p>We know there's money involved in this game, and when you choose to get one of the 456 NFTs you're placing a lot trust in us. <em>That's why we've chosen to lift our anonymity</em>, clarify our roadmap and show people the thought behind this project. Feel free to ask any of us anything, we're part of the community.</p>
 
-          <p>This may hurt the mysterious nature of our game. <em>We're ok with that.</em></p>
+          <p>This may hurt the mysterious nature of our game. We're ok with that.</p>
+          <br />
         </div>
 
         <div className="social-links">

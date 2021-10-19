@@ -4,8 +4,8 @@ import Players from "../../img/characters/Players.gif";
 import Guards from "../../img/characters/Guards.gif";
 import Detective from "../../img/characters/Detective.gif";
 import Frontman from "../../img/characters/Frontman.gif";
-import Placeholder from "../../img/characters/Placeholder.png";
 import Salesman from "../../img/characters/Salesman.png";
+import Vip from "../../img/characters/VIPs.gif";
 
 const Characters = () => {
 return (
@@ -35,7 +35,7 @@ return (
             desc="Listening to Sinatra and sipping whiskey, The Frontman waits to take down The Detective, win the .25 ETH prize and keep the machine rolling"
           />
           <Character
-            img={Placeholder}
+            img={Vip}
             name="VIPs"
             desc="Our 6 VIPs get to bet on the games outcome from the comfort of their penthouses. They have a 1/6 chance of winning .1 ETH every game"
           />

@@ -6,7 +6,7 @@
 
 main.wrapper {
   max-width: 1184px;
-  padding: 0;
+  padding: 16px;
   margin: 0 auto;
 
   @include breakpoint(sm) {
@@ -15,8 +15,12 @@ main.wrapper {
 }
 
 .section-divider {
-  margin-top: 120px;
+  margin-top: 80px;
   padding-bottom: 24px;
+
+  @include breakpoint(sm) {
+    margin-top: 120px;
+  }
 
   & img {
     max-width: 100%;
@@ -38,3 +42,4 @@ main.wrapper {
   margin: 0 auto;
   max-width: 1280px;
 }
+
