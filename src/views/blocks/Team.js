@@ -1,6 +1,5 @@
 import React from "react";
 import TeamMember from "../elements/TeamMember";
-import Placeholder from "../../img/team/Placeholder.png";
 import DiscordIcon from "../../img/discord-icon.png";
 import TwitterIcon from "../../img/twitter-icon.png";
 import Clarina from "../../img/team/clarina-site-ready.gif"
