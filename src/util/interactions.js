@@ -50,7 +50,6 @@ export const connectToWallet = async () => {
       setPlayerBalance(addressArray[0]);
       setPlayerAddress(addressArray[0]);
       setPlayerChain();
-      console.log(playerInfo);
 
       if (window.ethereum.networkVersion !== gameInfo.networkId) {
         try {
@@ -106,7 +105,6 @@ export const getCurrentWalletConnected = async () => {
         setPlayerBalance(addressArray[0]);
         setPlayerAddress(addressArray[0]);
         setPlayerChain();
-        console.log(playerInfo);
 
         return {
           address: addressArray[0],
@@ -146,7 +144,7 @@ function setPlayerAddress(address) {
 }
 
 function setPlayerChain() {
-  playerInfo.playerNetwork = window.ethereum.networkVersion;
+  playerInfo.playerChain = window.ethereum.networkVersion;
 }
 
 

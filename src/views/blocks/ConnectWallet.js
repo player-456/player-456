@@ -105,7 +105,7 @@ const ConnectWallet = () => {
 
   async function addWalletListener() {
     if (window.ethereum) {
-      const { address, totalMinted, playerBalance, playerChain } = await getCurrentWalletConnected();
+      const { totalMinted, playerBalance, playerChain } = await getCurrentWalletConnected();
       window.ethereum.on("accountsChanged", (accounts) => {
         setWallet(accounts);
         setStatus(status);
