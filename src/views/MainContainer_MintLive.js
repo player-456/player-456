@@ -15,7 +15,7 @@ import ConnectWallet from "./blocks/ConnectWallet";
 import SiteTeaser from "../img/site-teaser.gif";
 
 
-const MainContainerMintLive = () => {
+const MainContainer = () => {
 
   // Return the UI
   return (
@@ -51,4 +51,4 @@ const MainContainerMintLive = () => {
     )
   }
 
-export default MainContainerMintLive;
+export default MainContainer;

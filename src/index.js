@@ -4,7 +4,7 @@ import ReactDOM from "react-dom";
 import { Web3ReactProvider } from '@web3-react/core'
 import Web3 from 'web3'
 
-import MainContainer from "./views/MainContainer";
+import MainContainer from "./views/MainContainer_MintLive";
 
 // Styles
 import "./sass/App.scss";
