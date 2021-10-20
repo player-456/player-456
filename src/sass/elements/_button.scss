@@ -4,9 +4,16 @@
   border-radius: 4px;
   background: transparent;
   color: $white;
-  display: inline;
-  padding: 8px 92px;
   font-family: 'PoeRedcoatNew', Helvetica, Arial, sans-serif;
   font-size: 20px;
   cursor: pointer;
+  display: block;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  width: 100%;
+
+  @include breakpoint(sm) {
+    padding: 8px 92px;
+    display: inline;
+  }
 }

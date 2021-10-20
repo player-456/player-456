@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import Modal from "react-modal";
 // import Button from "../elements/Button";
 // import ProviderChooser from "../elements/ProviderChooser";
+import { ReactComponent as IncreaseIcon } from "../../img/icon-increase.svg";
+import { ReactComponent as DecreaseIcon } from "../../img/icon-decrease.svg";
 
 // Elements
 import { metamaskLogo } from "../../util/walletLogos";
@@ -25,26 +27,12 @@ const modalStyles = {
 const ConnectWallet = () => {
   // State variables
   const [walletAddress, setWallet] = useState("");
-  const [playerEthBalance, setplayerEthBalance] = useState("");
-  const [playerChain, setPlayerChain] = useState("");
   const [hasWallet, setHasWallet] = useState("");
   const [status, setStatus] = useState("");
   const [totalMinted, setTotalMinted] = useState("");
+  const [mintAmount, setMintAmount] = useState(1);
 
   const [modalIsOpen, setIsOpen] = useState(false);
-  const [wasOpen, setWasOpen] = useState(false);
-
-  function afterOpenModal() {
-    setTimeout(() => {
-      setWasOpen(true);
-    }, 0);
-  }
-
-  function afterClose() {
-    setTimeout(() => {
-      setWasOpen(false);
-    }, 0);
-  }
 
   /**
    * Makes sure they have enough funds
@@ -75,86 +63,95 @@ const ConnectWallet = () => {
    function reset() {
       window.location.reload();
       setTotalMinted("");
-      setplayerEthBalance("");
-      setPlayerChain("");
     }
 
   // These vars come from web3-react core
   // const { active, account, library, connector, activate, deactivate, chainId } = useWeb3React();
 
-  useEffect(async () => {
+  useEffect(() => {
     // Regain wallet connection on page reload
-    const { address, totalMinted, playerBalance, playerChain } = await getCurrentWalletConnected();
-    setWallet(address);
-    setStatus(status);
-    setTotalMinted(totalMinted);
-    setplayerEthBalance(playerBalance);
-    setPlayerChain(playerChain);
+    async function fetchData() {
+      const { address, totalMinted, playerBalance } = await getCurrentWalletConnected();
+      setWallet(address);
+      setStatus(status);
+      setTotalMinted(totalMinted);
 
-    if(window.ethereum) {
-      setHasWallet(true);
-      playerHasFunds(playerBalance);
-    } else {
-      setHasWallet(false);
+      if(window.ethereum) {
+        setHasWallet(true);
+        playerHasFunds(playerBalance);
+      } else {
+        setHasWallet(false);
+      }
     }
 
-    // Wallet listener
+    fetchData();
+
+    async function addWalletListener() {
+      if (window.ethereum) {
+        const { totalMinted, playerBalance } = await getCurrentWalletConnected();
+        window.ethereum.on("accountsChanged", (accounts) => {
+          setWallet(accounts);
+          setStatus(status);
+          setTotalMinted(totalMinted);
+        });
+
+        playerHasFunds(playerBalance);
+
+        window.ethereum.on("chainChanged", () => {
+          reset();
+        })
+
+        window.ethereum.on("accountsChanged", () => {
+          reset();
+        })
+
+        window.ethereum.on("disconnect", () => {
+          reset();
+        })
+      } else {
+        setStatus(
+          <p>
+            {" "}
+            🦊{" "}
+            <a target="_blank" href={`https://metamask.io/download.html`} rel="noreferrer">
+              You must install Metamask, a virtual Ethereum wallet, in your
+              browser.
+            </a>
+          </p>
+        );
+      }
+    }
     addWalletListener();
+  }, [status]);
 
-  }, []);
-
-  async function addWalletListener() {
-    if (window.ethereum) {
-      const { totalMinted, playerBalance, playerChain } = await getCurrentWalletConnected();
-      window.ethereum.on("accountsChanged", (accounts) => {
-        setWallet(accounts);
-        setStatus(status);
-        setTotalMinted(totalMinted);
-        setplayerEthBalance(playerBalance);
-        setPlayerChain(playerChain);
-      });
-
-      playerHasFunds(playerBalance);
-
-      window.ethereum.on("chainChanged", () => {
-        reset();
-      })
-
-      window.ethereum.on("accountsChanged", () => {
-        reset();
-      })
-
-      window.ethereum.on("disconnect", () => {
-        reset();
-      })
-    } else {
-      setStatus(
-        <p>
-          {" "}
-          🦊{" "}
-          <a target="_blank" href={`https://metamask.io/download.html`} rel="noreferrer">
-            You must install Metamask, a virtual Ethereum wallet, in your
-            browser.
-          </a>
-        </p>
-      );
-    }
-  }
 
   /**
    * Connects user's wallet
    */
   const connectWalletPressed = async () => {
-    const { address, totalMinted, playerBalance, playerChain } = await connectToWallet();
+    const { address, totalMinted, playerBalance } = await connectToWallet();
     setWallet(address);
     setTotalMinted(totalMinted);
-    setplayerEthBalance(playerBalance);
-    setPlayerChain(playerChain);
 
     playerHasFunds(playerBalance);
     // Close modal:
-    setWasOpen(false);
     setIsOpen(false);
+  };
+
+  const decrementMintAmount = () => {
+    let newMintAmount = mintAmount - 1;
+    if (newMintAmount < 1) {
+      newMintAmount = 1;
+    }
+    setMintAmount(newMintAmount);
+  };
+
+  const incrementMintAmount = () => {
+    let newMintAmount = mintAmount + 1;
+    if (newMintAmount > 10) {
+      newMintAmount = 10;
+    }
+    setMintAmount(newMintAmount);
   };
 
   /**
@@ -162,7 +159,8 @@ const ConnectWallet = () => {
    */
   const mintNow = async () => {
     console.log("Minting with address " + walletAddress);
-    mintNFT(walletAddress);
+    const numPlayersToMint = mintAmount;
+    mintNFT(numPlayersToMint);
   }
 
 return (
@@ -176,8 +174,6 @@ return (
         onRequestClose={() => setIsOpen(false)}
         className="modal--content"
         closeTimeoutMS={500}
-        onAfterOpen={afterOpenModal}
-        onAfterClose={afterClose}
         style={modalStyles}
       >
     <div className="provider-chooser-container">
@@ -197,32 +193,54 @@ return (
     </div>
     </Modal>
 
-    <button
-      className={`button button--cta ${walletAddress.length > 0 ? "" : "hidden"}`}
-      onClick={() => {mintNow()}}
-      id={"mintNowButton"}
-    >
-      Mint for 0.055 ETH
-    </button>
+    <div className={`${walletAddress.length > 0 ? "" : "hidden"}`}>
 
-    <p className="alert alert__error hidden" id="mintingError">
-    </p>
+      <div className="number-to-mint-container">
+        <label htmlFor="numPlayersToMintButton">Number to mint (max 10):</label>
+        <div className="stepper-control">
+          <button className="button__stepper" onClick={(e) => {
+            e.preventDefault();
+            decrementMintAmount();
+          }}><DecreaseIcon /></button>
 
-    <p className="total-minted">
-      Minted: {totalMinted ? (totalMinted) : ("???")} / 456
-    </p>
+          <p className="number-to-mint" id="numberToMintInput">{mintAmount}</p>
 
-    <p className="wallet-address">
-    {walletAddress.length > 0 ? (
-      "Connected: " +
-      String(walletAddress).substring(0, 4) +
-      "..." +
-      String(walletAddress).substring(38) +
-      ""
-    ) : (
-      "Not connected"
-    )}
-    </p>
+          <button className="button__stepper" onClick={(e) => {
+            e.preventDefault();
+            incrementMintAmount();
+          }}><IncreaseIcon /></button>
+        </div>
+      </div>
+
+      <button
+        className={`button button--cta`}
+        onClick={() => {mintNow()}}
+        id={"mintNowButton"}
+      >
+        Mint for 0.055 ETH
+      </button>
+
+      <p className="alert alert__error hidden" id="mintingError">
+      </p>
+
+      <p className="total-minted">
+        Minted: <span id="totalMintedSpan">{totalMinted ? (totalMinted) : ("???")}</span> / 456
+      </p>
+    </div>
+
+    <div className="wallet-address">
+      <p>
+      {walletAddress.length > 0 ? (
+        "Connected: " +
+        String(walletAddress).substring(0, 4) +
+        "..." +
+        String(walletAddress).substring(38)
+      ) : (
+        ""
+      )}
+      </p>
+    </div>
+
 
     {/* <button className="button" onClick={disconnect}>Disconnect</button> */}
   </div>

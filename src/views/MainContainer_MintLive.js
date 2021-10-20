@@ -24,7 +24,7 @@ const MainContainer = () => {
         <section>
           <div className="intro intro-content">
             <h2 className="h4 start-date">
-              Games starting October 24
+              Games starting November 5
             </h2>
 
             <ConnectWallet />

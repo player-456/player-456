@@ -5,6 +5,7 @@ html {
 
 body {
   background: $black;
+  margin: 0;
 }
 
 .hidden {
@@ -20,5 +21,16 @@ body {
 .wallet-address {
   position: absolute;
   top: 0;
-  left: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  @include breakpoint(sm) {
+    transform: none;
+    left: 24px;
+  }
+
+  & p {
+    color: $gray-medium;
+    font-size: .75rem;
+  }
 }

@@ -19,37 +19,37 @@ return (
           <TeamMember
             img={Clarina}
             linkUrl="https://twitter.com/LittleTomato444"
-            linkText="@clarina"
+            linkText="clarina"
             title="Art"
           />
           <TeamMember
             img={Larissa}
             linkUrl="https://twitter.com/ItsLarissaWith1"
-            linkText="@larissa"
+            linkText="larissa"
             title="Games"
           />
           <TeamMember
             img={Stevan}
             linkUrl="https://twitter.com/stevyhacker"
-            linkText="@stevan"
+            linkText="stevan"
             title="Blockchain"
           />
           <TeamMember
             img={Gabe}
             linkUrl="https://twitter.com/orzo__tweets"
-            linkText="@gabe"
+            linkText="gabe"
             title="Frontend"
           />
           <TeamMember
             img={Subi}
             linkUrl="https://www.linkedin.com/in/subimurugan"
-            linkText="@subi"
+            linkText="subi"
             title="Backend"
           />
           <TeamMember
             img={Meir}
             linkUrl="https://twitter.com/iota0xf"
-            linkText="@meir"
+            linkText="meir"
             title="Ops"
           />
         </div>

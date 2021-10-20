@@ -1,0 +1,35 @@
+.number-to-mint-container {
+  margin-bottom: 1rem;
+
+  & label {
+    display: block;
+    margin-right: .5rem;
+  }
+
+  & .stepper-control {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    & p {
+      margin: 0 8px;
+      line-height: 32px;
+    }
+  }
+
+  & button.button__stepper {
+    width: 32px;
+    height: 32px;
+    background: 0;
+    border: 0;
+    cursor: pointer;
+    margin-top: 4px;
+
+    @include breakpoint(sm) {
+      width: 28px;
+      height: 28px;
+    }
+  }
+}
+

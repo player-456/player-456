@@ -5,11 +5,11 @@
 // main wrapper
 
 main.wrapper {
-  max-width: 1184px;
-  padding: 16px;
+  padding: 24px;
   margin: 0 auto;
 
   @include breakpoint(sm) {
+    max-width: 1184px;
     padding: 0 48px;
   }
 }
