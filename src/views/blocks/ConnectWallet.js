@@ -132,6 +132,7 @@ const ConnectWallet = () => {
     const { address, totalMinted, playerBalance } = await connectToWallet();
     setWallet(address);
     setTotalMinted(totalMinted);
+    console.log(walletAddress);
 
     playerHasFunds(playerBalance);
     // Close modal:

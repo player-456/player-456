@@ -7,7 +7,7 @@ const key = process.env.REACT_APP_PINATA_KEY;
 const secret = process.env.REACT_APP_PINATA_SECRET;
 const axios = require('axios');
 const contractABI = require("./contract-abi.json");
-const contractAddress = "0x681b0227E558628Cb1AeeDA1F308Aa8BB9b7Cd37";
+const contractAddress = "0xBB29f528812A76a5792AA83f998Ba6FE9De18969";
 const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
 const web3 = createAlchemyWeb3(alchemyKey);
 
@@ -18,7 +18,7 @@ export const playerInfo = {
 }
 
 export const gameInfo = {
-  price: .055,
+  price: .0001,
   chainId: null,
   networkId: null,
   mm_id: null,
@@ -56,6 +56,7 @@ export const connectToWallet = async () => {
             }]
           })
         } finally {
+          console.log('ooooppppssss');
           window.location.reload();
         }
       }
@@ -205,32 +206,44 @@ export const mintNFT = async (numberOfPlayers) => {
 
   console.log("network: " + window.ethereum.networkVersion);
   console.log("total Supply: " + totSupply);
+  console.log("num players: " + numberOfPlayers);
 
-  // Create metadata
-  const metadata = {
-    image: "https://stupefied-pike-2518e3.netlify.app/static/media/Players.395e3186.gif",
-    description: "Pass to participate in Game 1",
-    name: "Player",
-  }
+  // async function mintClaim() {
+  //   const nonce = await web3.eth.getTransactionCount(fromAddress, 'latest');
 
-  // Call Pinata
-  const pinataResponse = await pinJSONToIPFS(metadata);
-  if (!pinataResponse.success) {
-    return {
-      success: false,
-      status: "Something went wrong while uploading tokenURI"
-    }
-  }
+  //   const tx = {
+  //     "from": fromAddress,
+  //     "to": contractAddress,
+  //     "nonce": nonce,
+  //     'gas': 500000,
+  //     'maxPriorityFeePerGas': 1999999987,
+  //     "data": player456Contract.methods.mintPlayer(numberOfPlayers).encodeABI()
+  //   };
 
-  const tokenURI = pinataResponse.pinataUrl;
+  //   const signPromise = web3.eth.accounts.signTransaction(tx, alchemyKey);
+  //   signPromise.then((signedTx) => {
 
+  //     web3.eth.sendSignedTransaction(signedTx.rawTransaction, function(err, hash) {
+  //       if(!err) {
+  //         console.log("The hash of your transaction is ", hash, "/nCheck Alchemy's Mempool to view the status of your transaction ");
+  //       } else {
+  //         console.log("Something went wrong when submitting your transaction:", err)
+  //       }
+  //     });
+  //   }).catch((err) => {
+  //     console.log("Promise failed: ", err);
+  //   })
+  // }
+
+  // mintClaim();
+
+  // TO DO: Update when new contract is up
   const mintClaim = await new Promise((resolve, reject) => {
       player456Contract.methods
           .mintPlayer(numberOfPlayers)
           .send(
               { from: fromAddress,
                 value: (numberOfPlayers * mintPrice).toString(),
-                tokenURI: tokenURI
                },
               function (error, transactionHash) {
                   if (transactionHash) resolve(transactionHash)
@@ -257,5 +270,5 @@ export const mintNFT = async (numberOfPlayers) => {
             success: true
           }
       }
-  }, 10 * 1000)
+  }, 5 * 1000)
 }
