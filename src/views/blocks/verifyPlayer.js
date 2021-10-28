@@ -1,10 +1,10 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useCallback } from "react";
 import Modal from "react-modal";
 import { db } from "../../util/db";
 import { PlayerContext } from "../../util/PlayerContext";
 import { metamaskLogo } from "../../util/walletLogos";
 import { getCurrentWalletConnected, connectToWallet, checkForPlayerTokens } from "../../util/interactions-game.js";
-import { parse } from "uuid";
+// import { parse } from "uuid";
 
 Modal.setAppElement("#root");
 
@@ -44,21 +44,51 @@ const VerifyPlayer = (props) => {
     setTokenList(arr);
   }
 
-  const playerHasPlayed = (value) => {
-    setActivePlayer({hasPlayed: value});
-  }
+  const newActivePlayer = useCallback((value) => {
+    setActivePlayer({playerID: value});
+  }, [setActivePlayer]);
 
-  const playerIsEliminated = (value) => {
+  const playerHasPlayed = useCallback((value) => {
+    setActivePlayer({hasPlayed: value});
+  }, [setActivePlayer]);
+
+  const playerIsEliminated = useCallback((value) => {
     setActivePlayer({isEliminated: value});
-  }
+  }, [setActivePlayer]);
+
+
   /**
    * Resets state variables and realoads window
    */
-   function reset() {
-      window.location.reload();
-      updateNumTokensOwned("");
-      updateTokenList({});
+
+  const verifyTokens = useCallback(async (address) => {
+    const playerTokens = await checkForPlayerTokens(address);
+    console.log(playerTokens);
+    updateTokenList(playerTokens);
+
+    if(parseInt(Object.keys(playerTokens).length) === 1) {
+      // setActivePlayer(playerTokens[0]);
+      if(fetchPlayerData(playerTokens[0])) {
+        // props.setNewActivePlayer(playerTokens[0]);
+        newActivePlayer({playerID: playerTokens[0]});
+      }
     }
+
+    // connect to LOCAL DB
+  async function fetchPlayerData(activePlayer) {
+      const data = db.players[activePlayer-1];
+
+      // If player has already player (hasPlayed == true)
+      if(data.hasPlayed) {
+        playerHasPlayed(true);
+      }
+
+      if(data.eliminated) {
+        playerIsEliminated(true)
+      }
+    }
+    // Hide begin button, show game window
+  }, [playerHasPlayed, playerIsEliminated, newActivePlayer])
 
   useEffect(() => {
     // Regain wallet connection on page reload
@@ -79,6 +109,12 @@ const VerifyPlayer = (props) => {
     }
 
     fetchData();
+
+    function reset() {
+      window.location.reload();
+      updateNumTokensOwned("");
+      updateTokenList({});
+    }
 
     async function addWalletListener() {
       if (window.ethereum) {
@@ -117,7 +153,7 @@ const VerifyPlayer = (props) => {
       }
     }
     addWalletListener();
-  }, [status]);
+  }, [status, numTokensOwned, verifyTokens]);
 
 
   /**
@@ -133,39 +169,6 @@ const VerifyPlayer = (props) => {
     // Close modal:
     setIsOpen(false);
   };
-
-
-
-  const verifyTokens = async (address) => {
-    const playerTokens = await checkForPlayerTokens(address);
-    console.log(playerTokens);
-    updateTokenList(playerTokens);
-
-    if(parseInt(Object.keys(playerTokens).length) === 1) {
-      // setActivePlayer(playerTokens[0]);
-      if(fetchPlayerData(playerTokens[0])) {
-        // props.setNewActivePlayer(playerTokens[0]);
-        setActivePlayer({playerID: playerTokens[0]});
-      }
-    }
-
-    // connect to LOCAL DB
-  async function fetchPlayerData(activePlayer) {
-      const data = db.players[activePlayer-1];
-
-      // If player has already player (hasPlayed == true)
-      if(data.hasPlayed) {
-        playerHasPlayed(true);
-      }
-
-      if(data.eliminated) {
-        playerIsEliminated(true)
-      }
-    }
-
-
-    // Hide begin button, show game window
-  }
 
   // const fetchPlayerData = async(activePlayer) => {
   //   fetch("https://player456.herokuapp.com/api/players")

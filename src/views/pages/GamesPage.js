@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useContext } from "react";
-import { PlayerContext, PlayerProvider } from "../../util/PlayerContext";
+import React, { useEffect, useState } from "react";
+// import { PlayerContext } from "../../util/PlayerContext";
 import VerifyPlayer from "../blocks/verifyPlayer";
 import GamesHeader from "../blocks/games/GamesHeader";
 import GameTimer from "../elements/GameTimer";
@@ -7,7 +7,7 @@ import GameOne from "../SeasonOne/01.GameOne";
 
 
 const GamesPage = () => {
-  const [activePlayer, setActivePlayer] = useContext(PlayerContext);
+  // const [activePlayer, setActivePlayer] = useContext(PlayerContext);
   const [gameActive, setGameActive] = useState(false);
 
   const toggleGameActive = () => {

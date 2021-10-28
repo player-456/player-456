@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 // Elems
-import Button from "../elements/Button";
+// import Button from "../elements/Button";
 import SiteTeaser from "../../img/site-teaser.gif";
 
 // Blocks
