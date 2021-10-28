@@ -84,10 +84,10 @@ const ConnectWallet = () => {
       }
     }
 
+    fetchData();
+
     async function addWalletListener() {
       if (window.ethereum) {
-        fetchData();
-
         const { totalMinted, playerBalance } = await getCurrentWalletConnected();
         window.ethereum.on("accountsChanged", (accounts) => {
           setWallet(accounts);
@@ -132,7 +132,6 @@ const ConnectWallet = () => {
     const { address, totalMinted, playerBalance } = await connectToWallet();
     setWallet(address);
     setTotalMinted(totalMinted);
-    console.log(walletAddress);
 
     playerHasFunds(playerBalance);
     // Close modal:
@@ -189,10 +188,7 @@ return (
       </div>
 
       <div className={`provider-chooser no-metamask ${hasWallet ? "hidden" : ""}`}>
-            No wallet detected! <a target="_blank" href={`https://metamask.io/download.html`} rel="noreferrer">
-              You must install Metamask, a virtual Ethereum wallet, in your
-              browser.
-            </a>
+            no metamask
       </div>
     </div>
     </Modal>

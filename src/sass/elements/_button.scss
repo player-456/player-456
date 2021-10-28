@@ -15,5 +15,12 @@
   @include breakpoint(sm) {
     padding: 8px 92px;
     display: inline;
+    width: auto;
   }
+}
+
+.button.button__link {
+  border: 0;
+  font-size: 1rem;
+  color: $gray-medium;
 }

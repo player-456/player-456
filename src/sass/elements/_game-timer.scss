@@ -1,0 +1,22 @@
+.game-timer {
+  text-align: center;
+
+  & h2 {
+    font-size: 1rem;
+    margin-bottom: 0;
+
+    @include breakpoint(sm) {
+      font-size: 1.5rem;
+    }
+  }
+
+  & .time-left {
+    font-family: Azonix, Helvetica, Arial, sans-serif;
+    font-size: 3rem;
+
+    @include breakpoint(sm) {
+      font-size: 4rem;
+    }
+
+  }
+}
