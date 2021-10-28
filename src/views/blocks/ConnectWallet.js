@@ -189,7 +189,10 @@ return (
       </div>
 
       <div className={`provider-chooser no-metamask ${hasWallet ? "hidden" : ""}`}>
-            no metamask
+            No wallet detected! <a target="_blank" href={`https://metamask.io/download.html`} rel="noreferrer">
+              You must install Metamask, a virtual Ethereum wallet, in your
+              browser.
+            </a>
       </div>
     </div>
     </Modal>
