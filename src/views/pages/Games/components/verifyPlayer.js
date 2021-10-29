@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useContext, useCallback } from "react";
 import Modal from "react-modal";
-import { db } from "../../util/db";
-import { PlayerContext } from "../../util/PlayerContext";
-import { metamaskLogo } from "../../util/walletLogos";
-import { getCurrentWalletConnected, connectToWallet, checkForPlayerTokens } from "../../util/interactions-game.js";
+import { db } from "../../../../util/db";
+import { PlayerContext } from "../../../../util/PlayerContext";
+import { metamaskLogo } from "../../../../util/walletLogos";
+import { getCurrentWalletConnected, connectToWallet, checkForPlayerTokens } from "../../../../util/interactions-game.js";
 // import { parse } from "uuid";
 
 Modal.setAppElement("#root");
@@ -116,6 +116,7 @@ const VerifyPlayer = (props) => {
       updateTokenList({});
     }
 
+
     async function addWalletListener() {
       if (window.ethereum) {
         window.ethereum.on("accountsChanged", (accounts) => {
@@ -188,12 +189,12 @@ const VerifyPlayer = (props) => {
     let playerSelectButtons = [];
 
     for(let i = 0; i < Object.keys(tokenList).length; i++) {
-      playerSelectButtons.push(<button className="button button_cta" onClick={() =>{choosePlayer(tokenList[i]);}} key={i}>Player {tokenList[i]}</button>)
+      playerSelectButtons.push(<button className="button button__cta" onClick={() =>{choosePlayer(tokenList[i]);}} key={i}>Player {tokenList[i]}</button>)
 
       // Stop if there's more than 10 tokens?
-      if(i > 8) {
-        break;
-      }
+      // if(i > 8) {
+      //   break;
+      // }
     }
 
     //
@@ -202,7 +203,8 @@ const VerifyPlayer = (props) => {
   }
 
   const choosePlayer = (playerNumber) => {
-    // connect to API, set wallet, see if player has been played or been eliminate
+    // TODO
+    // connect to API, set wallet, see if player has been played or been eliminated
     console.log("ap: ", activePlayer);
     // Hide selector section
     document.getElementById("choosePlayerContainer").classList.add("hidden");
@@ -269,7 +271,7 @@ return (
       {/* Only one token OR acive player set: */}
       <div className={`${activePlayer.playerID ? "begin-game-cta" : "begin-game-cta hidden"}`} id={`beginGameButtonContainer`}>
         <p>Welcome, Player {activePlayer.playerID}</p>
-        <button className={`button button_cta`} onClick={() => {props.beginGame()}} id={`beginGame`}>
+        <button className={`button button__cta`} onClick={() => {props.beginGame()}} id={`beginGame`}>
           Begin game
         </button>
 

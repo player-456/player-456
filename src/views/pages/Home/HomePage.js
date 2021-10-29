@@ -1,20 +1,19 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-// Elems
 // import Button from "../elements/Button";
-import SiteTeaser from "../../img/site-teaser.gif";
+import SiteTeaser from "../../../img/site-teaser.gif";
 
-// Blocks
-import Divider from "../elements/SectionDivider"
-import Header from "../blocks/Header";
-// import Intro from "../blocks/Intro";
-import Rules from "../blocks/Rules";
-import Characters from "../blocks/Characters";
-import Roadmap from "../blocks/Roadmap";
-import Faq from "../blocks/Faq";
-import Team from "../blocks/Team";
-import Footer from "../blocks/Footer";
+
+import Divider from "../../components/SectionDivider";
+import Header from "./components/Header";
+// import Intro from "./components/Intro";
+import Rules from "./components/Rules";
+import Characters from "./components/Characters";
+import Roadmap from "./components/Roadmap";
+import Faq from "./components/Faq";
+import Team from "./components/Team";
+import Footer from "./components/Footer";
 
 const HomePage = () => {
 return (

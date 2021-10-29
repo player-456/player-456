@@ -1,13 +1,13 @@
 import React from "react";
-import TeamMember from "../elements/TeamMember";
-import DiscordIcon from "../../img/discord-icon.png";
-import TwitterIcon from "../../img/twitter-icon.png";
-import Clarina from "../../img/team/clarina-site-ready.gif"
-import Larissa from "../../img/team/larissa-site-ready.gif"
-import Meir from "../../img/team/meir-site-ready.gif"
-import Stevan from "../../img/team/stevan-site-ready.gif"
-import Subi from "../../img/team/subi-site-ready.gif"
-import Gabe from "../../img/team/gabe-site-ready.gif"
+import TeamMember from "../../../components/TeamMember";
+import DiscordIcon from "../img/discord-icon.png";
+import TwitterIcon from "../img/twitter-icon.png";
+import Clarina from "../img/team/clarina-site-ready.gif"
+import Larissa from "../img/team/larissa-site-ready.gif"
+import Meir from "../img/team/meir-site-ready.gif"
+import Stevan from "../img/team/stevan-site-ready.gif"
+import Subi from "../img/team/subi-site-ready.gif"
+import Gabe from "../img/team/gabe-site-ready.gif"
 
 const Team = () => {
 return (

@@ -1,11 +1,11 @@
 import React from "react";
-import Character from "../elements/Character";
-import Players from "../../img/characters/Players.gif";
-import Guards from "../../img/characters/Guards.gif";
-import Detective from "../../img/characters/Detective.gif";
-import Frontman from "../../img/characters/Frontman.gif";
-import Salesman from "../../img/characters/Salesman.png";
-import Vip from "../../img/characters/VIPs.gif";
+import Character from "../../../components/Character";
+import Players from "../img/characters/Players.gif";
+import Guards from "../img/characters/Guards.gif";
+import Detective from "../img/characters/Detective.gif";
+import Frontman from "../img/characters/Frontman.gif";
+import Salesman from "../img/characters/Salesman.png";
+import Vip from "../img/characters/VIPs.gif";
 
 const Characters = () => {
 return (

@@ -2,11 +2,11 @@ import React from "react";
 import { BrowserRouter as Switch, Route } from "react-router-dom";
 
 // Pages
-import GamesPage from "./pages/GamesPage";
-import HomePage from "./pages/HomePage";
-import GameOne from "./SeasonOne/01.GameOne";
-import Players from "./pages/PlayersPage";
-import RulesPage from "./pages/RulesPage";
+import GamesPage from "./pages/Games/GamesPage";
+import HomePage from "./pages/Home/HomePage";
+import GameOne from "./pages/SeasonOne/01.GameOne";
+import Players from "./pages/Players/PlayersPage";
+import RulesPage from "./pages/Rules/RulesPage";
 import { PlayerProvider } from "../util/PlayerContext";
 
 

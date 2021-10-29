@@ -1,5 +1,5 @@
 import React from "react";
-import GamesHeader from "../blocks/games/GamesHeader";
+import GamesHeader from "../../components/GamesHeader";
 
 const RulesPage = () => {
 return (

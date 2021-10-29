@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 // import { PlayerContext } from "../../util/PlayerContext";
-import VerifyPlayer from "../blocks/verifyPlayer";
-import GamesHeader from "../blocks/games/GamesHeader";
-import GameTimer from "../elements/GameTimer";
+import VerifyPlayer from "./components/verifyPlayer";
+import GamesHeader from "../../components/GamesHeader";
+import GameTimer from "../../components/GameTimer";
 import GameOne from "../SeasonOne/01.GameOne";
 
 

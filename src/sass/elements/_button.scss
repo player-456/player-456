@@ -10,6 +10,7 @@
   display: block;
   padding-top: 8px;
   padding-bottom: 8px;
+  transition: all .2s ease-in-out;
   width: 100%;
 
   @include breakpoint(sm) {
@@ -19,8 +20,28 @@
   }
 }
 
+a.button:hover {
+  text-decoration: none;
+}
+
+.button.button__cta {
+
+  &:hover {
+    background: rgba(255,255,255,0.1);
+  }
+
+  &:active {
+    top: 2px;
+    position: relative;
+  }
+}
+
 .button.button__link {
   border: 0;
   font-size: 1rem;
   color: $gray-medium;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }

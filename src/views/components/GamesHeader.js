@@ -1,9 +1,9 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import LogoSm from "../../../img/player-456-logo-sm.png"
-import TwitterIcon from "../../../img/twitter-icon.png";
-import DiscordIcon from "../../../img/discord-icon.png";
-import OpenSeaIcon from "../../../img/opensea-icon.png";
+import LogoSm from "../../img/player-456-logo-sm.png"
+import TwitterIcon from "../../img/twitter-icon.png";
+import DiscordIcon from "../../img/discord-icon.png";
+import OpenSeaIcon from "../../img/opensea-icon.png";
 
 const GamesHeader = () => {
 return (

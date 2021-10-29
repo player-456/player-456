@@ -1,7 +1,7 @@
 import React from "react";
-import GamesHeader from "../blocks/games/GamesHeader";
-import GameTimer from "../elements/GameTimer";
-import SurvivalTable from "../elements/SurvivalTable";
+import GamesHeader from "../../components/GamesHeader";
+import GameTimer from "../../components/GameTimer";
+import SurvivalTable from "../../components/SurvivalTable";
 
 const PlayersPage = () => {
 return (

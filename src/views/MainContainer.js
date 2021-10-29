@@ -1,16 +1,14 @@
 import React from "react";
 
-// Blocks
-import Divider from "./elements/SectionDivider";
-import Header from "./blocks/Header";
-import Intro from "./blocks/Intro";
-import Rules from "./blocks/Rules";
-import Characters from "./blocks/Characters";
-import Roadmap from "./blocks/Roadmap";
-import Faq from "./blocks/Faq";
-import Team from "./blocks/Team";
-import Footer from "./blocks/Footer";
-
+import Divider from "./components/SectionDivider";
+import Header from "./pages/Home/components/Header";
+import Intro from "./pages/Home/components/Intro";
+import Rules from "./pages/Home/components/Rules";
+import Characters from "./pages/Home/components/Characters";
+import Roadmap from "./pages/Home/components/Roadmap";
+import Faq from "./pages/Home/components/Faq";
+import Team from "./pages/Home/components/Team";
+import Footer from "./pages/Home/components/Footer";
 
 const MainContainer = () => {
 

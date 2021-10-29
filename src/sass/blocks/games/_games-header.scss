@@ -81,6 +81,11 @@ nav.social-nav {
   & .social-nav--icon {
     width: 40px;
     margin: 0 .75rem;
+    transition: all .2s ease-in-out;
+
+    &:hover {
+      transform: scale(1.1);
+    }
   }
 
 }
