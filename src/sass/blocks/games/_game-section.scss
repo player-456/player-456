@@ -1,0 +1,183 @@
+.game-section {
+
+}
+
+.game-description {
+  margin-top: 4rem;
+  margin-bottom: 3rem;
+  text-align: center;
+
+  & h2 {
+    color: $pink;
+    font-size: 1.5rem;
+  }
+}
+
+.game-container {
+  width: 100%;
+  background-color: rgba($pink, .1);
+  border: 5px solid rgba($pink, .5);
+  display: flex;
+  align-items: center;
+
+  & .background{
+	  background-color:#191970;
+	  margin-top:-30px;
+	  height:1000px;
+  }
+	  
+	& .fixedwidth{
+	  width:1200px;
+	  margin:0 auto;
+  }
+	   
+  & .clear{
+    clear:both;
+  }
+		   
+  & .diffVary{
+    margin:0;
+    margin: 30px 0px 0px 15px;
+    border-style:solid;
+    border-color:black;
+    font-weight:bold;
+    color:#8000ff;
+    width:90px;
+    height:40px;
+    padding: 25px 20px 0px 40px;
+  }
+			  
+  & .diffVary:hover {
+    background-color:black;
+  }
+			  
+  & .timeBox{
+    margin:0;
+    margin:15px -50px 30px 30px;
+    float:right;
+    border-style:ridge;
+    width:200px;
+    height:40px;
+    padding: 20px 10px 0px 20px;
+    background-color:#8000ff;
+    font-weight:bold;
+    position:relative; 
+  }
+		  
+  & .scoreBox{
+	 margin:0;
+	 margin-top:-100px;
+	 float:right;
+	 border-style:ridge;
+	 border-color:yellow;
+	 width:150px;
+	 height:40px;
+	 padding: 20px 10px 0px 20px;
+	 background-color:#8000ff;
+	 font-weight:bold;
+  }
+		   
+  & #result {
+    padding:0;
+    font-weight:bold;
+    font-size:400%;
+    color: #000000 !important;
+    width:700px;
+    height:80px;
+    border-radius:5px;
+    border-color:darkgold; 
+    border-style:solid;
+    background-color:white;
+    text-align:center; 
+    padding: 20px 20px 20px 15px;
+    margin: 300px 300px 0px 10px;
+    position:static;
+    // display:none;
+   
+    & #bestResult {
+      color: #000000;
+      font-size:70px;
+      font-weight: bold;
+    }
+  }  	
+			 
+	& #tryagain{
+    font-weight:bold !important; 
+    font-size:300% !important;
+    width:400px;
+    height:80px;
+    border-radius:5px;
+    border-color:black; 
+    border-style:solid;
+    background-color:lightyellow;
+    color:orangered;
+    text-align:center;
+    padding: 15px 10px 0px 5px;
+    margin: 20px 0 0 150px;
+    position:relative;
+    // display:none;
+
+  }
+				
+  & #Box{
+    width:200px;
+    height:200px;
+    border-style:solid;
+    position:relative;
+    // display:none; 
+  }
+			
+	& #border{
+    width:750px;
+    height:500px;
+    border-width: 10px; 
+    border-style:solid;
+    background-color: #CC0000;	
+    margin:-260px 0px 0px 200px;
+  } 
+  
+  & .main-cta-container {
+    display: inline-block;
+    margin: 0 auto;
+  }
+
+  & .begin-game-cta {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  & .choose-account-cta {
+    text-align: center;
+  }
+
+  & .choose-account-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    max-width: 80%;
+    margin: 1rem auto;
+
+    & button {
+      margin-bottom: 1rem;
+      flex-basis: 30%;
+    }
+  }
+}
+
+.desktop-only {
+  display: none;
+
+  @include breakpoint(sm) {
+    display: block;
+  }
+}
+
+.switch-to-desktop {
+  padding-top: 2rem;
+  text-align: center;
+
+  @include breakpoint(sm) {
+    display: none;
+  }
+}

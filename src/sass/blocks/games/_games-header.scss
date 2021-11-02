@@ -1,0 +1,91 @@
+.games-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  @include breakpoint(sm) {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+}
+
+nav.main-nav {
+  display: flex;
+  flex-direction: column;
+
+  @include breakpoint(sm) {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  & ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+  }
+
+  & ul > li {
+    display: inline;
+    margin: 0 1rem;
+  }
+
+  & ul > li > a {
+    color: $white;
+    font-family: Azonix, Helvetica, Arial, sans-serif;
+    font-size: 1.25rem;
+
+    &[aria-current=page] {
+      color: $pink;
+    }
+  }
+
+  & .main-logo-link {
+    text-align: center;
+  }
+
+  & .main-logo-sm {
+    display: inline;
+    margin: 0;
+    padding: 0;
+
+    & img {
+      display: block;
+      width: 130px;
+      margin: 0 auto;
+      padding-bottom: 1rem;
+    }
+  }
+}
+
+nav.social-nav {
+
+  & ul {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  & ul > li {
+    display: inline;
+  }
+
+  &.logo-link {
+    display: block;
+  }
+
+  & .social-nav--icon {
+    width: 40px;
+    margin: 0 .75rem;
+    transition: all .2s ease-in-out;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+
+}

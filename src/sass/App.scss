@@ -1,5 +1,19 @@
+// Reset
 @import-normalize;
+
+//Fonts
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap');
+@font-face {
+  font-family: 'Azonix';
+  src: url('../fonts/Azonix.otf');
+}
+
+@font-face {
+  font-family: 'PoeRedcoatNew';
+  src: url('../fonts/PoeRedcoatNew.ttf');
+}
+
+// Utils
 @import "utils/vars";
 @import "utils/mixins";
 
@@ -15,6 +29,8 @@
 @import "elements/list";
 @import "elements/team-member";
 @import "elements/inputs";
+@import "elements/game-timer";
+@import "elements/table";
 
 // Blocks
 @import "blocks/header";
@@ -24,8 +40,8 @@
 @import "blocks/team";
 @import "blocks/social";
 @import "blocks/footer";
+@import "blocks/games/game-section";
 
-
-
-
+// Games pages
+@import "blocks/games/games-header";
 
