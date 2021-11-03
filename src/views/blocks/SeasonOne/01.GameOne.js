@@ -1,16 +1,15 @@
 import React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 
 const GameOne = () => {
   const [reactionTime, setReactionTime] = useState(0);
   const [score, setScore] = useState(0);
-  const [bestResult1, setBestResult1] = useState(10);
-  const [bestResult2, setBestResult2] = useState(10);
+  const [bestReactionTime, setBestReactionTime] = useState(1);
 
-  const [boxDisplay, setBoxDisplay] = useState(true);
-  const [resultDisplay, setResultDisplay] = useState(true);
-  const [tryagainDisplay, settryAgainDisplay] = useState(true);
+  const [boxDisplay, setBoxDisplay] = useState(false);
+  const [resultDisplay, setResultDisplay] = useState(false);
+  const [tryagainDisplay, settryAgainDisplay] = useState(false);
   
   const [boxRadius, setBoxRadius] = useState(0);
   const [boxTop, setBoxTop] = useState(0);
@@ -21,70 +20,31 @@ const GameOne = () => {
   const [mediumBackground, setMediumBackground] = useState(0);
   const [hardBackground, setHardBackground] = useState(0);
 
-  // let makeBoxOut;
-      
-  let createdTime;
-  
-  // const score=0; 
-  let difficult=1; 
-  // const point=100; const fault=0; 
-  // const bestResult1=10; 
-  // const bestResult2=10; 
+  const [createdTime, setCreatedTime] = useState(0);
+  const [difficult, setDifficult] = useState(1);
+  const [point, setPoint] = useState(50);
+  const [fault, setFault] = useState(50);
 
-  let point=50; 
-  // const difficult=2; 
-  
-  let fault=50; 
-  // const difficult=3; 
+  const makeBoxOutRef = useRef(null);
+
+  // let makeBoxOut;
 
   useEffect(() => {
-    let time = Math.random();
-    time = time*2500;
-
-    const makeBoxOut = setTimeout(() => {
-      if (Math.random()>0.5) {
-        setBoxRadius("100px");
-      } else {
-        setBoxRadius("0");
-      }
-                  
-      let top=Math.random();
-      top=top*300;
-      let left=Math.random();
-      left=left*500;
-      
-      setBoxTop(top+"px");
-
-      setBoxLeft(left+"px");
-      
-      setBoxBackground(getRandomColor());
-      
-      setBoxDisplay(true)
-      
-      createdTime = Date.now();
-      
-    },time);
+    makeBox();
 
     const timeOut = setTimeout(() => {
-      clearTimeout(makeBoxOut);
-      setBoxDisplay(false);
+      clearTimeout(makeBoxOutRef.current);
       setResultDisplay(true);
       settryAgainDisplay(true);
+      setBoxDisplay(false);
       alert('Game Over');
 
       // send user scores
-      fetch("player456.herokuapp.com/api/players/", {
-        "method": "PUT",
-        "headers": {
-          // "x-rapidapi-host": "fairestdb.p.rapidapi.com",
-          // "x-rapidapi-key": "apikey",
-          "content-type": "application/json",
-          // "accept": "application/json"
-        },
-        "body": JSON.stringify({
-          id: '6173470832db8c26196b7e5c',
+      fetch("http://player456.herokuapp.com/api/players/1", {
+        "method": "POST",
+        "body": {
           score: score
-        })
+        }
       })
       .then(response => response.json())
       .then(response => {
@@ -96,7 +56,7 @@ const GameOne = () => {
     },15000);
 
     return () => {
-      clearTimeout(makeBoxOut);
+      clearTimeout(makeBoxOutRef.current);
       clearTimeout(timeOut);
     };
 
@@ -112,52 +72,53 @@ const GameOne = () => {
   }
   
   const makeBox = () => {
-    // console.log('makebox');
-    // let time = Math.random();
-    // time = time*2500;
-    // makeBoxOut = setTimeout(() => {
-    //   console.log('timeout');
-      
-    //   if (Math.random()>0.5) {
-    //     setBoxRadius("100px");
-    //   } else {
-    //     setBoxRadius("0");
-    //   }
-                  
-    //   let top=Math.random();
-    //   top=top*300;
-    //   let left=Math.random();
-    //   left=left*500;
-      
-    //   setBoxTop(top+"px");
+    console.log('makebox');
+    let time = Math.random();
+    time = time*2500;
 
-    //   setBoxLeft(left+"px");
+    makeBoxOutRef.current = setTimeout(() => {
+      if (Math.random()>0.5) {
+        setBoxRadius("100px");
+      } else {
+        setBoxRadius("0");
+      }
+
+      let top=Math.random();
+      top=top*300;
+      let left=Math.random();
+      left=left*500;
       
-    //   setBoxBackground(getRandomColor());
+      setBoxTop(top+"px");
+
+      setBoxLeft(left+"px");
       
-    //   setBoxDisplay(true)
+      setBoxBackground(getRandomColor());
       
-    //   createdTime = Date.now();
+      setBoxDisplay(true)
       
-    // },time);
+      setCreatedTime(Date.now());
+      
+    },time);
   }
 
   const clickBox = () => {
     console.log('clickbox');
     const clickedTime = Date.now();
+    console.log((clickedTime-createdTime) / 1000);
 
     setReactionTime((clickedTime-createdTime) / 1000);
     // document.getElementById("time").innerHTML = reactionTime;
     setBoxDisplay(false);
-    
+
+    console.log(reactionTime)
+    console.log(bestReactionTime)
+
     makeBox();
-    
-    setBestResult1(reactionTime); 
-    
-    if (bestResult2 > bestResult1) {
-      setBestResult2(bestResult1);
+
+    if (bestReactionTime >= reactionTime) {
+      setBestReactionTime(reactionTime);
     }
-    
+
     if ((difficult === 1 && reactionTime > 4) || (difficult == 2 && (reactionTime > 2 && reactionTime < 3))) {
       setScore(score);
     } else if (difficult === 2 && reactionTime > 3) {
@@ -168,19 +129,17 @@ const GameOne = () => {
       setScore(score + point);
     }
           
-    if (score === 0) {  
-      setResultDisplay(true)
-      settryAgainDisplay(true)
-      setBoxDisplay(false)
-      // setBorderDisplay(false)
+    if (score === 0) {
+      // setResultDisplay(true)
+      // settryAgainDisplay(true)
+      // setBoxDisplay(false)
     }
-                          
   }
                               
   const clickEasy = () => {
-    point=100;
-    difficult=1;
-    fault=0;
+    setPoint(100);
+    setDifficult(1);
+    setFault(0);
 
     setEasyBackground("orange");
 
@@ -191,9 +150,9 @@ const GameOne = () => {
   };			
 
   const clickMedium = () => {
-    point=100;
-    difficult=2;
-    fault=50; 
+    setPoint(100);
+    setDifficult(2);
+    setFault(50);
     
     setEasyBackground("red");
     
@@ -203,9 +162,9 @@ const GameOne = () => {
   };
 
   const clickHard = () => {	
-    point=50;
-    difficult=3;
-    fault=50;			
+    setPoint(50);
+    setDifficult(3);
+    setFault(50);
 
     setEasyBackground("red");
     
@@ -247,14 +206,14 @@ const GameOne = () => {
           <div id="border" className="border">
         
                 { boxDisplay ? (
-                    <div id="Box" className="Box" onClick={clickBox(this)} style={{ borderRadius: boxRadius, top: boxTop, left: boxLeft, backgroundColor: boxBackground }}> </div>
+                    <div id="Box" className="Box" onClick={clickBox} style={{ borderRadius: boxRadius, top: boxTop, left: boxLeft, backgroundColor: boxBackground }}> </div>
                   ) : ('')
                 }
               
                 <div className="clear"> </div>
                 
                 { resultDisplay ? (
-                    <p id="result" class="result"> Best time: <span id="bestResult">{bestResult2}</span>s</p>
+                    <p id="result" class="result"> Best time: <span id="bestResult">{bestReactionTime}</span>s</p>
                   ) : ('')
                 }
                 
@@ -262,11 +221,11 @@ const GameOne = () => {
                     <p id="tryagain" class="tryagain" onClick={tryAgain}> Try Again! </p>	
                   ) : ('')
                 }
-                  
+
           </div> 
           {/* ) : ('') */}
         {/* } */}
-        
+
       </div>
 
       </div>
