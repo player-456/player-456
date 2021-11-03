@@ -26,6 +26,8 @@ const GameOne = () => {
   const [fault, setFault] = useState(50);
 
   const makeBoxOutRef = useRef(null);
+  const scoreRef = useRef(score);
+  scoreRef.current = score;
 
   // let makeBoxOut;
 
@@ -39,12 +41,18 @@ const GameOne = () => {
       setBoxDisplay(false);
       alert('Game Over');
 
+      console.log(scoreRef.current)
       // send user scores
       fetch("http://player456.herokuapp.com/api/players/1", {
-        "method": "POST",
-        "body": {
-          score: score
-        }
+        method: 'POST', // The method
+        mode: 'no-cors', // It can be no-cors, cors, same-origin
+        credentials: 'same-origin',
+        headers: { 
+          accept: 'application/json',  
+        },
+        body: JSON.stringify({
+          score: scoreRef.current 
+        })
       })
       .then(response => response.json())
       .then(response => {
@@ -127,12 +135,6 @@ const GameOne = () => {
       setScore(score - fault);
     } else{
       setScore(score + point);
-    }
-          
-    if (score === 0) {
-      // setResultDisplay(true)
-      // settryAgainDisplay(true)
-      // setBoxDisplay(false)
     }
   }
                               
