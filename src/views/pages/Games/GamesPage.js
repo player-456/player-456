@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-// import { PlayerContext } from "../../util/PlayerContext";
+import React, { useEffect, useState, useContext } from "react";
+import { PlayerContext } from "util/PlayerContext";
 import VerifyPlayer from "./components/verifyPlayer";
 import GamesHeader from "../../components/GamesHeader";
 import GameTimer from "../../components/GameTimer";
@@ -8,8 +8,8 @@ import GameOne from "../SeasonOne/01.GameOne";
 
 const GamesPage = () => {
   // const [activePlayer, setActivePlayer] = useContext(PlayerContext);
-  const [gameActive, setGameActive] = useState(true);
-  const [playerId, setPlayerId] = useState(null);
+  const [gameActive, setGameActive] = useState(false);
+  const [activePlayer, setActivePlayer] = useContext(PlayerContext);
 
   const toggleGameActive = () => {
     setGameActive(!gameActive);
@@ -24,13 +24,8 @@ const GamesPage = () => {
   }
 
   const endGame = () => {
-    // record score
-    // set "hasPlayed" to true"
     toggleGameActive();
-  }
-
-  const setActivePlayer = (playerId) => {
-    setPlayerId(playerId);
+    setActivePlayer("");
   }
 
 return (
@@ -46,7 +41,17 @@ return (
               <p>you can only play once. Once you lose, your score will be recorded.</p>
             </div>
 
-            <div className="game-container">
+            { gameActive ? (
+              <div className="game-container">
+                <div className="game" id="gameContainer">
+                  <GameOne endGame={endGame} />
+                </div>
+              </div>
+            ) : (
+              <VerifyPlayer beginGame={beginGame} endGame={endGame} />
+            )}
+
+            {/* <div className="game-container">
               { gameActive ? (
                 <div className="game" id="gameContainer">
                   <GameOne endGame={endGame} playerId={playerId} />
@@ -54,7 +59,7 @@ return (
               ) : (
                 <VerifyPlayer beginGame={beginGame} activePlayer={setActivePlayer} />
               )}
-            </div>
+            </div> */}
 
           </section>
 

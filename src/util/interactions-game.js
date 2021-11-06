@@ -4,7 +4,7 @@ require("dotenv").config();
 const alchemyKey = process.env.REACT_APP_ALCHEMY_KEY;
 const requestedChain = process.env.REACT_APP_CURRENT_NETWORK;
 const contractABI = require("./contract-abi.json");
-const contractAddress = "0x7E3EDC06AC20f9C6994F1C9C0E58f1d3a2777c71";
+const contractAddress = "0xBB29f528812A76a5792AA83f998Ba6FE9De18969";
 const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
 const web3 = createAlchemyWeb3(alchemyKey);
 
@@ -179,4 +179,26 @@ export const checkForPlayerTokens = async(address) => {
   //   return tokensOwned;
 
   // }
+}
+
+export const updatePlayerDatabase = async(playerID, playerScore) => {
+  const URL = `http://player456.herokuapp.com/api/players/${playerID}`;
+
+  fetch(URL, {
+    "method": 'POST', // The method
+    "headers": {
+      "content-type": "application/json",
+    },
+    "body": JSON.stringify({
+      "score": playerScore
+    })
+  })
+  .then((response) => response.json())
+  .then((response) => {
+    console.log(response)
+    alert(response.message)
+  })
+  .catch(err => {
+    console.log(err);
+  });
 }

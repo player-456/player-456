@@ -44,10 +44,6 @@ const VerifyPlayer = (props) => {
     setTokenList(arr);
   }
 
-  const newActivePlayer = useCallback((value) => {
-    setActivePlayer({playerID: value});
-  }, [setActivePlayer]);
-
   const playerHasPlayed = useCallback((value) => {
     setActivePlayer({hasPlayed: value});
   }, [setActivePlayer]);
@@ -56,21 +52,15 @@ const VerifyPlayer = (props) => {
     setActivePlayer({isEliminated: value});
   }, [setActivePlayer]);
 
-
-  /**
-   * Resets state variables and realoads window
-   */
-
   const verifyTokens = useCallback(async (address) => {
     const playerTokens = await checkForPlayerTokens(address);
-    console.log(playerTokens);
-    updateTokenList(playerTokens);
+    console.log("from verifyTokens: ", playerTokens);
+    setTokenList(playerTokens);
 
     if(parseInt(Object.keys(playerTokens).length) === 1) {
       // setActivePlayer(playerTokens[0]);
       if(fetchPlayerData(playerTokens[0])) {
-        props.setActivePlayer(playerTokens[0]);
-        newActivePlayer({playerID: playerTokens[0]});
+        setActivePlayer({playerID: playerTokens[0]});
       }
     }
 
@@ -88,7 +78,7 @@ const VerifyPlayer = (props) => {
       }
     }
     // Hide begin button, show game window
-  }, [playerHasPlayed, playerIsEliminated, newActivePlayer])
+  }, [playerHasPlayed, playerIsEliminated, setActivePlayer])
 
   useEffect(() => {
     // Regain wallet connection on page reload
@@ -110,6 +100,9 @@ const VerifyPlayer = (props) => {
 
     fetchData();
 
+     /**
+     * Resets state variables and realoads window
+     */
     function reset() {
       window.location.reload();
       updateNumTokensOwned("");
@@ -188,16 +181,15 @@ const VerifyPlayer = (props) => {
   const renderPlayerSelectButtons = () => {
     let playerSelectButtons = [];
 
-    for(let i = 0; i < Object.keys(tokenList).length; i++) {
-      playerSelectButtons.push(<button className="button button__cta" onClick={() =>{choosePlayer(tokenList[i]);}} key={i}>Player {tokenList[i]}</button>)
-
-      // Stop if there's more than 10 tokens?
-      // if(i > 8) {
-      //   break;
-      // }
+    if(tokenList) {
+      for(let i = 0; i < Object.keys(tokenList).length; i++) {
+        playerSelectButtons.push(<button className="button button__cta" onClick={() =>{choosePlayer(tokenList[i]);}} key={i}>Player {tokenList[i]}</button>)
+      }
+    } else {
+      console.log('no tokens yet');
     }
 
-    //
+
 
     return playerSelectButtons;
   }
@@ -221,7 +213,7 @@ const VerifyPlayer = (props) => {
   }
 
 return (
-  <div className="main-cta-container" id="verifyPlayerContainer">
+  <div className="connect-wallet-container" id="verifyPlayerContainer">
     <button className={`button button--cta ${walletAddress.length > 0 ? "hidden" : ""}`} onClick={() => setIsOpen(true)}>
       Connect wallet
     </button>
@@ -261,7 +253,7 @@ return (
       </div>
 
       {/* Several tokens: */}
-      <div className={`${parseInt(numTokensOwned) > 1 ? "choose-account-cta" : "choose-account-cta hidden"}`} id={`choosePlayerContainer`}>
+      <div className={`${parseInt(numTokensOwned) && !activePlayer.playerID ? "choose-account-cta" : "choose-account-cta hidden"}`} id={`choosePlayerContainer`}>
         <p>Choose a player:</p>
         <div className="choose-account-grid">
           {renderPlayerSelectButtons()}
