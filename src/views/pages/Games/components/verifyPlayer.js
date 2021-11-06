@@ -69,7 +69,7 @@ const VerifyPlayer = (props) => {
     if(parseInt(Object.keys(playerTokens).length) === 1) {
       // setActivePlayer(playerTokens[0]);
       if(fetchPlayerData(playerTokens[0])) {
-        // props.setNewActivePlayer(playerTokens[0]);
+        props.setActivePlayer(playerTokens[0]);
         newActivePlayer({playerID: playerTokens[0]});
       }
     }

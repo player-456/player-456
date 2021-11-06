@@ -8,7 +8,8 @@ import GameOne from "../SeasonOne/01.GameOne";
 
 const GamesPage = () => {
   // const [activePlayer, setActivePlayer] = useContext(PlayerContext);
-  const [gameActive, setGameActive] = useState(false);
+  const [gameActive, setGameActive] = useState(true);
+  const [playerId, setPlayerId] = useState(null);
 
   const toggleGameActive = () => {
     setGameActive(!gameActive);
@@ -28,6 +29,10 @@ const GamesPage = () => {
     toggleGameActive();
   }
 
+  const setActivePlayer = (playerId) => {
+    setPlayerId(playerId);
+  }
+
 return (
       <main className="wrapper">
         <div className="content-container">
@@ -36,22 +41,19 @@ return (
 
           <section className="game-section desktop-only" id="gameSection">
             <div className="game-description">
-              <h2>Round 1: Snake</h2>
-              <p>Use arrow keys to move &amp; eat the apple without hitting the wall or yourself. </p>
+              <h2>Round 1: Test reaction</h2>
+              <p>Click on the circle or square created as fast as you can! Difficulties are constied. </p>
               <p>you can only play once. Once you lose, your score will be recorded.</p>
             </div>
 
             <div className="game-container">
               { gameActive ? (
                 <div className="game" id="gameContainer">
-                  <GameOne endGame={endGame} />
+                  <GameOne endGame={endGame} playerId={playerId} />
                 </div>
               ) : (
-                <VerifyPlayer beginGame={beginGame} />
+                <VerifyPlayer beginGame={beginGame} activePlayer={setActivePlayer} />
               )}
-
-
-
             </div>
 
           </section>
