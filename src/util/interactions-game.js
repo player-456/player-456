@@ -190,7 +190,8 @@ export const updatePlayerDatabase = async(playerID, playerScore) => {
       "content-type": "application/json",
     },
     "body": JSON.stringify({
-      "score": playerScore
+      "score": playerScore,
+      // "hasPlayed": true
     })
   })
   .then((response) => response.json())
