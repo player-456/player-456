@@ -36,49 +36,11 @@ const GameOne = (props) => {
     makeBox();
     gameContainerRef.current.scrollIntoView();
 
-    console.log(props.playerId)
-
-    fetch("http://player456.herokuapp.com/api/players", {
-        "method": 'GET', // The method
-        "headers": {
-          "content-type": "application/x-www-form-urlencoded",
-        }
-      })
-      .then((response) => response.json())
-      .then((response) => {
-        console.log(response)
-      })
-      .catch(err => {
-        console.log(err);
-      });
-
     const timeOut = setTimeout(() => {
       clearTimeout(makeBoxOutRef.current);
       setResultDisplay(true);
       setBoxDisplay(false);
       alert('Game Over');
-
-      console.log(scoreRef.current)
-
-      // const URL = `http://player456.herokuapp.com/api/players/${activePlayer.playerID}`;
-
-      // fetch(URL, {
-      //   "method": 'POST', // The method
-      //   "headers": {
-      //     "content-type": "application/json",
-      //   },
-      //   "body": JSON.stringify({
-      //     "score": scoreRef.current
-      //   })
-      // })
-      // .then((response) => response.json())
-      // .then((response) => {
-      //   console.log(response)
-      //   alert(response.message)
-      // })
-      // .catch(err => {
-      //   console.log(err);
-      // });
 
       //  Moved this to interactions-game.js
 

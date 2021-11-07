@@ -201,5 +201,10 @@ export const updatePlayerDatabase = async(playerID, playerScore) => {
   })
   .catch(err => {
     console.log(err);
+
+    var msg = 'The CORS policy for this site does not ' +
+    'allow access from the specified Origin.'
+
+    alert(msg);
   });
 }
