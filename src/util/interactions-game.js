@@ -182,7 +182,7 @@ export const checkForPlayerTokens = async(address) => {
 }
 
 export const updatePlayerDatabase = async(playerID, playerScore) => {
-  const URL = `http://player456.herokuapp.com/api/players/${playerID}`;
+  const URL = `https://player456.herokuapp.com/api/players/${playerID}`;
 
   fetch(URL, {
     "method": 'POST', // The method
