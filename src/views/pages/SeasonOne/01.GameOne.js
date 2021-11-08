@@ -10,7 +10,7 @@ const GameOne = (props) => {
 
   const [reactionTime, setReactionTime] = useState(0);
   const [score, setScore] = useState(0);
-  const [bestReactionTime, setBestReactionTime] = useState(0);
+  const [bestReactionTime, setBestReactionTime] = useState(15);
 
   const [boxDisplay, setBoxDisplay] = useState(false);
   const [resultDisplay, setResultDisplay] = useState(false);
