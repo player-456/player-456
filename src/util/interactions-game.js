@@ -182,21 +182,23 @@ export const checkForPlayerTokens = async(address) => {
 }
 
 export const updatePlayerDatabase = async(playerID, playerScore) => {
-  const URL = `https://player456.herokuapp.com/api/players/${playerID}`;
+  // const URL = `https://player456.herokuapp.com/api/players/${playerID}`;
+  const URL = `http://localhost:9000/update/${playerID}`;
 
   fetch(URL, {
-    "method": 'POST', // The method
-    "headers": {
+    mode: "cors",
+    method: 'POST', // The method
+    headers: {
       "content-type": "application/json",
     },
-    "body": JSON.stringify({
-      "score": playerScore,
-      // "hasPlayed": true
+    body: JSON.stringify({
+      "id": playerID,
+      "hasPlayed": false,
+      "scoreGame1": playerScore,
     })
   })
   .then((response) => response.json())
   .then((response) => {
-    console.log(response)
     alert(response.message)
   })
   .catch(err => {

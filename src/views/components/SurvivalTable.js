@@ -1,12 +1,12 @@
 import React from "react";
-import { db } from "../../util/db";
+// import { db } from "../../util/db";
 
 const SurvivalTable = () => {
 return (
     <div className="section-content__narrow survival-table" id="survivalTable">
       <h3>Survival Table</h3>
 
-      <table>
+      {/* <table>
         <thead>
           <tr>
             <th>Rank</th>
@@ -25,7 +25,7 @@ return (
             )
           })}
         </tbody>
-      </table>
+      </table> */}
     </div>
   )
 }

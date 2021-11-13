@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useContext, useCallback } from "react";
 import Modal from "react-modal";
-import { db } from "../../../../util/db";
 import { PlayerContext } from "../../../../util/PlayerContext";
 import { metamaskLogo } from "../../../../util/walletLogos";
 import { getCurrentWalletConnected, connectToWallet, checkForPlayerTokens } from "../../../../util/interactions-game.js";
+import BeginGameButton from "../components/BeginGameButton";
 // import { parse } from "uuid";
 
 Modal.setAppElement("#root");
@@ -44,41 +44,52 @@ const VerifyPlayer = (props) => {
     setTokenList(arr);
   }
 
-  const playerHasPlayed = useCallback((value) => {
-    setActivePlayer({hasPlayed: value});
-  }, [setActivePlayer]);
+  // const playerHasPlayed = useCallback((value) => {
+  //   setActivePlayer({hasPlayed: value});
+  // }, [setActivePlayer]);
 
-  const playerIsEliminated = useCallback((value) => {
-    setActivePlayer({isEliminated: value});
-  }, [setActivePlayer]);
+  // const playerIsEliminated = useCallback((value) => {
+  //   setActivePlayer({isEliminated: value});
+  // }, [setActivePlayer]);
 
   const verifyTokens = useCallback(async (address) => {
+    // Check for tokens in player's wallet
     const playerTokens = await checkForPlayerTokens(address);
-    console.log("from verifyTokens: ", playerTokens);
+    // console.log("from verifyTokens: ", playerTokens);
     setTokenList(playerTokens);
 
+     // connect to DB
+    const fetchPlayerData = async(activePlayer) => {
+      // const URL = `https://player456.herokuapp.com/api/players/${activePlayer}`
+      const URL = `http://localhost:9000/players/${activePlayer}`; // <- local db
+
+      try {
+        const response = await fetch(URL, {
+          mode: 'cors',
+          method: 'GET'
+        });
+        const json = await response.json();
+        // set this data to the player context
+        setActivePlayer({
+          playerID: activePlayer,
+          hasPlayed: json.hasPlayed
+        })
+      } catch (error) {
+        console.log("Error: ", error);
+      }
+    }
+
+    // If player only has one token, we're ready to play
     if(parseInt(Object.keys(playerTokens).length) === 1) {
-      // setActivePlayer(playerTokens[0]);
-      if(fetchPlayerData(playerTokens[0])) {
-        setActivePlayer({playerID: playerTokens[0]});
-      }
+      // const playerData = await fetchPlayerData(tokenList[0])
+      // console.log("from fetch: ", playerData);
+      fetchPlayerData(playerTokens[0]);
     }
 
-    // connect to LOCAL DB
-  async function fetchPlayerData(activePlayer) {
-      const data = db.players[activePlayer-1];
 
-      // If player has already player (hasPlayed == true)
-      if(data.hasPlayed) {
-        playerHasPlayed(true);
-      }
-
-      if(data.eliminated) {
-        playerIsEliminated(true)
-      }
-    }
+  // get data
     // Hide begin button, show game window
-  }, [playerHasPlayed, playerIsEliminated, setActivePlayer])
+  }, [setActivePlayer])
 
   useEffect(() => {
     // Regain wallet connection on page reload
@@ -107,6 +118,7 @@ const VerifyPlayer = (props) => {
       window.location.reload();
       updateNumTokensOwned("");
       updateTokenList({});
+      setActivePlayer({playerID: ""});
     }
 
 
@@ -147,7 +159,7 @@ const VerifyPlayer = (props) => {
       }
     }
     addWalletListener();
-  }, [status, numTokensOwned, verifyTokens]);
+  }, [status, numTokensOwned, verifyTokens, setActivePlayer]);
 
 
   /**
@@ -164,32 +176,20 @@ const VerifyPlayer = (props) => {
     setIsOpen(false);
   };
 
-  // const fetchPlayerData = async(activePlayer) => {
-  //   fetch("https://player456.herokuapp.com/api/players")
-  //     .then(res => res.json())
-  //     .then(
-  //       (result) => {
-  //         console.log(result.players[0]);
-  //       },
-  //      (error) => {
-  //        console.log(error);
-  //      }
-  //     )
-  // }
-  // get data
 
   const renderPlayerSelectButtons = () => {
     let playerSelectButtons = [];
 
     if(tokenList) {
       for(let i = 0; i < Object.keys(tokenList).length; i++) {
-        playerSelectButtons.push(<button className="button button__cta" onClick={() =>{choosePlayer(tokenList[i]);}} key={i}>Player {tokenList[i]}</button>)
+        playerSelectButtons.push(
+          <button className="button button__cta" onClick={() =>{choosePlayer(tokenList[i]);}} key={i}>Player {tokenList[i]}</button>
+        )
       }
     } else {
       console.log('no tokens yet');
+      playerSelectButtons.push(<p>No tokens found!</p>)
     }
-
-
 
     return playerSelectButtons;
   }
@@ -197,13 +197,12 @@ const VerifyPlayer = (props) => {
   const choosePlayer = (playerNumber) => {
     // TODO
     // connect to API, set wallet, see if player has been played or been eliminated
-    console.log("ap: ", activePlayer);
     // Hide selector section
     document.getElementById("choosePlayerContainer").classList.add("hidden");
 
     // Set active player ID
-    // setActivePlayer(playerNumber);
     setActivePlayer({playerID: playerNumber});
+    console.log("ap: ", activePlayer);
   }
 
   const switchPlayer = () => {
@@ -244,8 +243,16 @@ return (
 
     <div className={`${walletAddress.length > 0 ? "begin-game-button-container" : "begin-game-button-container hidden"}`}>
 
-      {/* <Link to="/GameOne" className="button button__cta">Proceed to game</Link> */}
-      {/* <button className="button button__cta" onClick={()=>{verifyTokens()}}>Check tokens</button> */}
+      {/* Has already played */}
+      {/* <div className={`${!props.hasPlayed ? "begin-game-cta" : "begin-game-cta hidden"}`} id={`beginGameButtonContainer`}>
+        <p>Welcome, Player {activePlayer.playerID}</p>
+        <button className={`button button__cta`} id={`beginGame`} disabled>
+          Player has already played
+        </button>
+
+        <button className={`button button__link ${parseInt(numTokensOwned) > 1 ? "" : "hidden"}`} onClick={() => {switchPlayer();}} id={`changePlayerButton`}>Choose a different player</button>
+      </div> */}
+
 
       {/* No tokens */}
       <div className={`${parseInt(numTokensOwned) === 0 ? "begin-game-cta" : "begin-game-cta hidden"}`}>
@@ -263,9 +270,8 @@ return (
       {/* Only one token OR acive player set: */}
       <div className={`${activePlayer.playerID ? "begin-game-cta" : "begin-game-cta hidden"}`} id={`beginGameButtonContainer`}>
         <p>Welcome, Player {activePlayer.playerID}</p>
-        <button className={`button button__cta`} onClick={() => {props.beginGame()}} id={`beginGame`}>
-          Begin game
-        </button>
+
+        <BeginGameButton beginGame={props.beginGame} />
 
         <button className={`button button__link ${parseInt(numTokensOwned) > 1 ? "" : "hidden"}`} onClick={() => {switchPlayer();}} id={`changePlayerButton`}>Choose a different player</button>
       </div>

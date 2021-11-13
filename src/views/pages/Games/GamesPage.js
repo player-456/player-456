@@ -25,7 +25,10 @@ const GamesPage = () => {
 
   const endGame = () => {
     toggleGameActive();
-    setActivePlayer("");
+
+    if(activePlayer) {
+      setActivePlayer("");
+    }
   }
 
 return (
@@ -48,7 +51,7 @@ return (
                 </div>
               </div>
             ) : (
-              <VerifyPlayer beginGame={beginGame} endGame={endGame} />
+              <VerifyPlayer beginGame={beginGame} />
             )}
 
             {/* <div className="game-container">

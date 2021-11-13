@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { useEffect, useState, useRef, useContext } from "react";
 import { PlayerContext } from "util/PlayerContext";
 import { updatePlayerDatabase } from "util/interactions-game";
@@ -21,9 +21,9 @@ const GameOne = (props) => {
   const [boxBackground, setBoxBackground] = useState(0);
 
   const [createdTime, setCreatedTime] = useState(0);
-  const [difficult, setDifficult] = useState(1);
-  const [point, setPoint] = useState(50);
-  const [fault, setFault] = useState(50);
+  const difficult = 1;
+  const point= 50;
+  const fault = 50;
 
   const makeBoxOutRef = useRef(null);
   const scoreRef = useRef(score);
@@ -31,45 +31,7 @@ const GameOne = (props) => {
   scoreRef.current = score;
 
   // let makeBoxOut;
-
-  useEffect(() => {
-    makeBox();
-    gameContainerRef.current.scrollIntoView();
-
-    const timeOut = setTimeout(() => {
-      clearTimeout(makeBoxOutRef.current);
-      setResultDisplay(true);
-      setBoxDisplay(false);
-      alert('Game Over');
-
-      //  Moved this to interactions-game.js
-
-      // Here's the calculation for the total score; need to figure out best reaction time first.
-      // Note: do we want to average their reaction time instead?
-      // const totalScore = scoreRef.current / (.5 * bestReactionTime);
-      updatePlayerDatabase(activePlayer.playerID, scoreRef.current);
-
-      // Set player as "has played" on global Context
-      setActivePlayer({hasPlayed: true});
-    },15000);
-
-    return () => {
-      clearTimeout(makeBoxOutRef.current);
-      clearTimeout(timeOut);
-    };
-
-  }, []);
-
-  const getRandomColor = () => {
-    const letters="0123456789ABCDEF".split('');
-    let color="#";
-    for (let i=0; i < 6; i++){
-      color+=letters[Math.round(Math.random()*15)];
-    }
-    return color;
-  }
-
-  const makeBox = () => {
+  const makeBox = useCallback(async () => {
     console.log('makebox');
     let time = Math.random();
     time = time*2500;
@@ -97,6 +59,43 @@ const GameOne = (props) => {
       setCreatedTime(Date.now());
 
     },time);
+  }, []);
+
+  useEffect(() => {
+    makeBox();
+    gameContainerRef.current.scrollIntoView();
+
+    const timeOut = setTimeout(() => {
+      clearTimeout(makeBoxOutRef.current);
+      setResultDisplay(true);
+      setBoxDisplay(false);
+      alert('Game Over');
+
+      //  Moved this to interactions-game.js
+
+      // Here's the calculation for the total score; need to figure out best reaction time first.
+      // Note: do we want to average their reaction time instead?
+      // const totalScore = scoreRef.current / (.5 * bestReactionTime);
+      updatePlayerDatabase(activePlayer.playerID, scoreRef.current);
+
+      // Set player as "has played" on global Context
+      setActivePlayer({hasPlayed: true});
+    },5000);
+
+    return () => {
+      clearTimeout(makeBoxOutRef.current);
+      clearTimeout(timeOut);
+    };
+
+  }, [activePlayer.playerID, makeBox, setActivePlayer]);
+
+  const getRandomColor = () => {
+    const letters="0123456789ABCDEF".split('');
+    let color="#";
+    for (let i=0; i < 6; i++){
+      color+=letters[Math.round(Math.random()*15)];
+    }
+    return color;
   }
 
   const clickBox = () => {
