@@ -7,7 +7,7 @@ const key = process.env.REACT_APP_PINATA_KEY;
 const secret = process.env.REACT_APP_PINATA_SECRET;
 const axios = require('axios');
 const contractABI = require("./contract-abi.json");
-const contractAddress = "0x681b0227E558628Cb1AeeDA1F308Aa8BB9b7Cd37";
+const contractAddress = "0x1B1b7833ffC8F568f8D82BCddAe533107f65cb9F";
 const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
 const web3 = createAlchemyWeb3(alchemyKey);
 

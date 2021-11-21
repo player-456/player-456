@@ -4,7 +4,7 @@ require("dotenv").config();
 const alchemyKey = process.env.REACT_APP_ALCHEMY_KEY;
 const requestedChain = process.env.REACT_APP_CURRENT_NETWORK;
 const contractABI = require("./contract-abi.json");
-const contractAddress = "0xBB29f528812A76a5792AA83f998Ba6FE9De18969";
+const contractAddress = "0x1B1b7833ffC8F568f8D82BCddAe533107f65cb9F";
 const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
 const web3 = createAlchemyWeb3(alchemyKey);
 
