@@ -1,0 +1,27 @@
+.survival-table {
+  padding-bottom: 3rem;
+
+  & h3 {
+    font-size: 20px;
+    background: #333;
+    margin-bottom: 8px;
+  }
+
+  & table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  & table thead tr {
+    border-bottom: 2px solid #333;
+  }
+
+  & table tbody tr {
+    border-bottom: 1px solid #222;
+  }
+
+  & table th {
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
+}

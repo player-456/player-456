@@ -1,28 +1,21 @@
-@font-face {
-  font-family: 'Azonix';
-  src: url('../../fonts/Azonix.otf');
-}
-
-@font-face {
-  font-family: 'PoeRedcoatNew';
-  src: url('../../fonts/PoeRedcoatNew.ttf');
-}
-
 * {
   color: $gray-light;
-  font-family: 'Comfortaa', Helvetica, Arial, sans-serif;
+  font-family: $content-font;
   font-size: 16px;
   line-height: 1.7;
 }
 
-h1 {
+h1,
+.h1 {
+  font-size: 3rem; // 48px
+  font-family: $heading-font;
   margin-top: 3rem;
 }
 
 h2,
 .h2 {
   font-size: 2.5rem; // 40px;
-  font-family: Azonix, Helvetica, Arial, sans-serif;
+  font-family: $heading-font;
   text-align: center;
   margin: 24px 0;
   line-height: 1.7;
@@ -35,13 +28,18 @@ h2,
 h3,
 .h3 {
   font-size: 26px;
-  font-family: Azonix, Helvetica, Arial, sans-serif;
+  font-family: $heading-font;
+}
+
+h3.players-info {
+  font-family: $content-font;
+  font-size: 2rem;
 }
 
 h4,
 .h4 {
   font-size: 21px;
-  font-family: Azonix, Helvetica, Arial, sans-serif;
+  font-family: $heading-font;
   line-height: 1.5;
   margin: 1rem 0;
 }

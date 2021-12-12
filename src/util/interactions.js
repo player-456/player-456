@@ -181,7 +181,7 @@ export const mintNFT = async (numberOfPlayers) => {
   const playersRemaining = 456 - await player456Contract.methods.totalSupply().call();
   const currentBalance = playerInfo.playerBalance;
   const fromAddress = playerInfo.playerAddress;
-  const mintPrice = gameInfo.price * 10 ** 18;
+  const mintPrice = await player456Contract.methods.playerPrice().call();
 
   // Make sure we're not sold out! (move this)
   // if(totSupply >= 456) {
